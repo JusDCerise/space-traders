@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import useDataFetching from "../useFetchingData";
+import useDataFetching from "../functions/useFetchingData";
 import handleBuy from "../functions/buy";
 
 export default function Shipyard() {

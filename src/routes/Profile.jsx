@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useDataFetching from "../useFetchingData";
+import useDataFetching from "../functions/useFetchingData";
 
 export default function Profile() {
   const { data: userData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");

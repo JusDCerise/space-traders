@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useDataFetching from "../useFetchingData";
+import useDataFetching from "../functions/useFetchingData";
 
 export default function HomePage() {
   const { handleLogout } = useDataFetching();

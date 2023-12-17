@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useDataFetching from "../useFetchingData";
+import useDataFetching from "../functions/useFetchingData";
 import handleChangeStatus from "../functions/changeState";
 import handleNavigate from "../functions/navigate";
 import handleSell from "../functions/sell";
@@ -53,7 +53,9 @@ export default function Fleet() {
                 <td>{ship.nav.systemSymbol}</td>
                 <td>{ship.nav.waypointSymbol}</td>
                 <td>{ship.nav.status}</td>
-                <td>{ship.fuel.current}/{ship.fuel.capacity}</td>
+                <td>
+                  {ship.fuel.current}/{ship.fuel.capacity}
+                </td>
                 <td>
                   {ship.cargo.units}/{ship.cargo.capacity}
                 </td>
