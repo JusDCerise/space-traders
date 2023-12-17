@@ -1,0 +1,16 @@
+#root {
+  max-width: 100vw;
+  display: flex;
+}
+
+.content {
+  padding: 50px;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  th{
+    text-align: start;
+  }
+}
