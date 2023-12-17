@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className="content">
       <h2>HomePage</h2>
-      <p>Welcome in Space Traders game</p>
+      <p>Welcome in Space Traders game </p>
     </div>
   );
 }
