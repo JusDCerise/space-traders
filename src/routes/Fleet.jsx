@@ -31,8 +31,7 @@ export default function Fleet() {
   // };
   return (
     <div className="content">
-      <h2>Your Ships</h2>
-
+      <h2>Your Fleet</h2>
       {shipsData && waypointsData ? (
         <table>
           <thead>
@@ -52,7 +51,11 @@ export default function Fleet() {
                 <td>{ship.symbol}</td>
                 <td>{ship.nav.systemSymbol}</td>
                 <td>{ship.nav.waypointSymbol}</td>
-                <td>{ship.nav.status}</td>
+                <td>
+                  <button className="btn-prm" onClick={() => handleClickChangeStatus(ship.symbol, ship.nav.status === "IN_ORBIT" ? "dock" : "orbit")}>
+                    {ship.nav.status}
+                  </button>
+                </td>
                 <td>
                   {ship.fuel.current}/{ship.fuel.capacity}
                 </td>
@@ -60,7 +63,7 @@ export default function Fleet() {
                   {ship.cargo.units}/{ship.cargo.capacity}
                 </td>
                 <td>
-                  <Link to={`/fleet/${ship.nav.systemSymbol}/${ship.symbol}`}>See more</Link>
+                  <Link to={`/fleet/${ship.nav.systemSymbol}/${ship.symbol}`} className="btn-prm">See more</Link>
                 </td>
                 {/* <p>Ship: {ship.symbol}</p>
               <Link to={`/ships/${ship.symbol}`}>See more</Link>

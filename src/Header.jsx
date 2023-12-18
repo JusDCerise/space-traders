@@ -9,18 +9,32 @@ export default function Header() {
 
   return (
     <div className="header">
-      <img src="" alt="" />
-      <Link to={"/"}>Home</Link>
-      <Link to={"/profile"}>Profile</Link>
-      <Link to={"/fleet"}>Fleet</Link>
-      <button onClick={handleLogout}>Log out</button>
+      <img src="/images/logo.svg" alt="" />
+      <div className="headerNav">
+        {/* <Link to={"/"} className="headerLink">
+          <img src="/icons/user.svg" alt="" className="link-icon" />
+          <span>Home</span>
+        </Link> */}
+        <Link to={"/profile"} className="headerLink">
+          <img src="/icons/user.svg" alt="" className="link-icon" />
+          <span>Profile</span>
+        </Link>
+        <Link to={"/fleet"} className="headerLink">
+          <img src="/icons/ship.svg" alt="" className="link-icon" />
+          <span>Fleet</span>
+        </Link>
+      </div>
+      <button onClick={handleLogout} className="headerLink logout">
+        <img src="/icons/logout.svg" alt="" className="link-icon" />
+        <span>Log out</span>
+      </button>
       {userData ? (
         <div className="user">
           <p>{userData.symbol}</p>
           <p>{userData.credits} credits</p>
         </div>
       ) : (
-        <p>chargement des données</p>
+        <p></p>
       )}
     </div>
   );

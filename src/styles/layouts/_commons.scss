@@ -6,11 +6,76 @@
 .content {
   padding: 50px;
   width: 100%;
+  background-color: var(--color-background);
 }
 
-table {
-  width: 100%;
-  th{
-    text-align: start;
+// BTN
+.btn-prm {
+  margin: 8px 8px;
+  background-color: white;
+  color: var(--color-background);
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 8px 15px;
+  border: none;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: 0.1s;
+  font-size: 14px;
+  &::before {
+    position: absolute;
+    content: "";
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -49%);
+    width: calc(100% + 5px);
+    height: calc(100% + 5px);
+    border-radius: 9px;
+    border: solid 3px white;
+    transition: 0.1s;
+  }
+  &::after {
+    position: absolute;
+    content: url("/icons/stars-btn.svg");
+    right: -21px;
+    top: -20px;
+    width: 20px;
+    height: auto;
+    scale: 0;
+    transform: rotate(90deg);
+    transition: 0.2s;
+  }
+  &:hover {
+    &::before {
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
+    }
+    &::after {
+      transform: rotate(0deg);
+      scale: 1;
+    }
   }
 }
+// BTN
+
+// TABLE
+table {
+  width: 100%;
+  border-spacing: 0;
+  thead {
+    background-color: var(--color-primary);
+  }
+  tr {
+    margin: 0;
+  }
+  th {
+    text-align: start;
+    margin: 0;
+  }
+}
+//TABLE
