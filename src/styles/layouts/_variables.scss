@@ -1,12 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  font-family: "Orbitron", sans-serif;
-}
-
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -22,12 +15,26 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --color-primary: #462b73;
-  --color-secondary: #ab8eda;
+  --color-primary: #2a2438;
+  --color-secondary: #352f44;
   --color-background: #0d0c11;
+
+  --color-text: #dbd8e3;
+
+  --color-table1: #2a2438;
+  --color-table2: #352f44;
+  --color-table3: #443D55;
+}
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  color: var(--color-text);
 }
 
 h1,
 h2 {
   font-size: 40px;
+  margin-bottom: 15px;
 }

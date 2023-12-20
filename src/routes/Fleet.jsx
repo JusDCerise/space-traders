@@ -33,16 +33,20 @@ export default function Fleet() {
     <div className="content">
       <h2>Your Fleet</h2>
       {shipsData && waypointsData ? (
+        // <section className="table">
+        //   <div className="thead">
+
+        //   </div>
         <table>
           <thead>
             <tr>
-              <th>Symbol</th>
-              <th>System</th>
-              <th>Waypoint</th>
-              <th>State</th>
-              <th>Fuel</th>
-              <th>Cargo</th>
-              <th>Actions</th>
+              <td>Symbol</td>
+              <td>System</td>
+              <td>Waypoint</td>
+              <td>State</td>
+              <td>Fuel</td>
+              <td>Cargo</td>
+              <td>Actions</td>
             </tr>
           </thead>
           <tbody>
@@ -57,13 +61,17 @@ export default function Fleet() {
                   </button>
                 </td>
                 <td>
-                  {ship.fuel.current}/{ship.fuel.capacity}
+                  {ship.fuel.current}
+                  <span className="minimize">/{ship.fuel.capacity}</span>
                 </td>
                 <td>
-                  {ship.cargo.units}/{ship.cargo.capacity}
+                  {ship.cargo.units}
+                  <span className="minimize">/{ship.cargo.capacity}</span>
                 </td>
                 <td>
-                  <Link to={`/fleet/${ship.nav.systemSymbol}/${ship.symbol}`} className="btn-prm">See more</Link>
+                  <Link to={`/fleet/${ship.nav.systemSymbol}/${ship.symbol}`} className="btn-prm">
+                    See more
+                  </Link>
                 </td>
                 {/* <p>Ship: {ship.symbol}</p>
               <Link to={`/ships/${ship.symbol}`}>See more</Link>
