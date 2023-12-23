@@ -33,10 +33,6 @@ export default function Fleet() {
     <div className="content">
       <h2>Your Fleet</h2>
       {shipsData && waypointsData ? (
-        // <section className="table">
-        //   <div className="thead">
-
-        //   </div>
         <table>
           <thead>
             <tr>
@@ -73,37 +69,6 @@ export default function Fleet() {
                     See more
                   </Link>
                 </td>
-                {/* <p>Ship: {ship.symbol}</p>
-              <Link to={`/ships/${ship.symbol}`}>See more</Link>
-              <p>Fuel: {ship.fuel.current}</p>
-              <p>
-                Statut: {ship.nav.status}
-                <button onClick={() => handleClickChangeStatus(ship.symbol, ship.nav.status === "IN_ORBIT" ? "dock" : "orbit")}>Change</button>
-              </p>
-              <p>Flight Mode: {ship.nav.flightMode}</p>
-              <p>Acutal System: {ship.nav.systemSymbol}</p>
-              <p>Waypoint: {ship.nav.waypointSymbol}</p>
-              <Link to={`/shipyard/${ship.symbol}/${ship.nav.systemSymbol}`}>Buy a ship in system {ship.nav.systemSymbol}</Link>
-              <p>or</p>
-              <Link to={`/shipyard/${ship.symbol}/${ship.nav.systemSymbol}/${ship.nav.waypointSymbol}`}>Buy in {ship.nav.waypointSymbol}</Link>
-              <div>
-                <p>Navigate on another planet :</p>
-                {ship.nav.status === "IN_ORBIT" ? (
-                  <>
-                    <select name="waypoints" id="waypoints" value={selectedWaypoints[ship.symbol] || ""} onChange={(e) => handleWaypointChange(ship.symbol, e.target.value)}>
-                      <option value="">Select a planet</option>
-                      {waypointsData.map((waypoint) => (
-                        <option key={waypoint.symbol} value={`${waypoint.symbol}`}>
-                          {waypoint.symbol}
-                        </option>
-                      ))}
-                    </select>
-                    <button onClick={() => handleClickNavigate(selectedWaypoints[ship.symbol], ship.symbol)}>Naviguer</button>
-                  </>
-                ) : (
-                  <p>You have to be in orbit to navigate</p>
-                )}
-              </div> */}
               </tr>
             ))}
           </tbody>
