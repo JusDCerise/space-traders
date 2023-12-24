@@ -14,7 +14,7 @@ export default function Profile() {
           <p>Username: {userData.symbol}</p>
           <p>Start Faction: {userData.startingFaction}</p>
           <p>Actual location: {userData.headquarters}</p>
-          <p>Contracts: {contractsData[0].type}</p>
+          {/* <p>Contracts: {contractsData[0].type}</p> */}
           <p>Account ID: {userData.accountId}</p>
           <p>Credits: {userData.credits}</p>
         </div>

@@ -27,14 +27,19 @@
     background-color: var(--color-table2);
     overflow: hidden;
     position: relative;
-    .total-time{
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 5px;
-        
-        border-radius: 10px;
-        background-color: var(--color-primary);
+    .total-time {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 5px;
+
+      border-radius: 10px;
+      background-color: var(--color-primary);
     }
+  }
+}
+.shipCargo {
+  .extracts {
+    margin-bottom: 15px;
   }
 }

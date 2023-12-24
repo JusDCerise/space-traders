@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/fleet/:systemSymbol/:shipSymbol",
+    path: "/fleet/:systemSymbol/:waypointSymbol/:shipSymbol",
     element: (
       <>
         <Header />

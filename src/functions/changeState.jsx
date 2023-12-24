@@ -13,7 +13,7 @@ const handleChangeStatus = async (shipId, statut) => {
 
     const response = await fetch(`https://api.spacetraders.io/v2/my/ships/${shipId}/${statut}`, options);
     // const responseData = await response.json();
-    window.location.reload();
+    // window.location.reload();
   } catch (error) {
     console.error(error);
   }

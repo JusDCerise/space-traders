@@ -65,7 +65,7 @@ export default function Fleet() {
                   <span className="minimize">/{ship.cargo.capacity}</span>
                 </td>
                 <td>
-                  <Link to={`/fleet/${ship.nav.systemSymbol}/${ship.symbol}`} className="btn-prm">
+                  <Link to={`/fleet/${ship.nav.systemSymbol}/${ship.nav.waypointSymbol}/${ship.symbol}`} className="btn-prm">
                     See more
                   </Link>
                 </td>

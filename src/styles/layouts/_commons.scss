@@ -26,7 +26,7 @@
   white-space: nowrap;
   transition: 0.1s;
   font-size: 14px;
-  &.icon{
+  &.icon {
     padding: 8px;
     margin-left: 20px;
   }
@@ -68,6 +68,22 @@
       scale: 1;
     }
   }
+  &:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+    &:hover {
+      &:hover {
+        &::before {
+          width: calc(100% + 5px);
+          height: calc(100% + 5px);
+        }
+        &::after {
+          transform: none;
+          scale: 0;
+        }
+      }
+    }
+  }
 }
 // BTN
 
@@ -95,6 +111,29 @@ table {
     padding: 5px 10px;
     border-bottom: solid 1px var(--color-table1);
     padding-block: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: relative;
+    &.actions {
+      padding-right: 5px !important;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 60%;
+      background-color: white;
+    }
+    &:last-of-type {
+      padding-right: 0px;
+      // padding-left: 10px;
+      &::after {
+        display: none;
+      }
+    }
   }
   tbody {
     tr {
@@ -113,17 +152,16 @@ table {
 }
 //TABLE
 
-
-.flexBetween{
+.flexBetween {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.flex-row{
+.flex-row {
   display: flex;
   gap: 20px;
-  &.center{
+  &.center {
     align-items: center;
   }
 }

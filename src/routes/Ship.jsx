@@ -7,44 +7,14 @@ import handleSell from "../functions/sell";
 import handleExtractWithoutSurvey from "../functions/extract";
 
 export default function Vaisseaux() {
-  const { systemSymbol, shipSymbol } = useParams();
-  const { data: shipsData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
+  const { systemSymbol, shipSymbol, waypointSymbol } = useParams();
+
+  const { data: shipsData, handleLogout, setResetState } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
   const { data: waypointsData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?limit=20`, "waypoint");
+  // const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
+  const { data: marketData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`, "market");
 
-  const [cooldown, setCooldown] = useState(null);
-  const [remaining, setRemaining] = useState(null);
-  const [time, setTime] = useState(null);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchData = async () => {
-      try {
-        const { data: extractData } = await useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}/cooldown`, "extract");
-        if (isMounted && extractData) {
-          setCooldown(extractData.totalSeconds);
-          setRemaining(extractData.remainingSeconds);
-          setTime(100 - (extractData.remainingSeconds / extractData.totalSeconds) * 100);
-        }
-      } catch (error) {
-        // Gérer les erreurs ici
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const intervalId = setInterval(() => {
-      fetchData();
-    }, 1000);
-
-    fetchData(); // Appel initial au chargement du composant
-
-    return () => {
-      isMounted = false; // Marquer le composant comme démonté lors du démontage
-      clearInterval(intervalId);
-    };
-  }, [shipSymbol]);
-
-  // const [selectedWaypoints, setSelectedWaypoints] = useState({});
+  console.log(shipsData);
 
   const handleWaypointChange = (shipId, selectedWaypoint) => {
     setSelectedWaypoints((prevSelectedWaypoints) => ({
@@ -69,6 +39,15 @@ export default function Vaisseaux() {
     handleSell(symbol, shipSymbol, units);
   };
 
+  // Refresh des données de la page
+  // const [resetState, setResetState] = useState(false);
+
+  const handleReset = () => {
+    // setInterval(() => {
+    setResetState((prevResetState) => !prevResetState);
+    // }, 1000);
+  };
+
   return (
     <div className="content">
       {shipsData && waypointsData ? (
@@ -78,6 +57,7 @@ export default function Vaisseaux() {
             <section className="shipInfos">
               <div>
                 <p className="title">System :</p>
+                <button onClick={handleReset}>Réinitialiser</button>
                 <p>{shipsData.nav.systemSymbol}</p>
               </div>
               <div>
@@ -97,7 +77,13 @@ export default function Vaisseaux() {
                 <p className="title">Statut :</p>
                 <p>
                   {shipsData.nav.status}
-                  <button className="btn-prm icon" onClick={() => handleClickChangeStatus(shipsData.symbol, shipsData.nav.status === "IN_ORBIT" ? "dock" : "orbit")}>
+                  <button
+                    className="btn-prm icon"
+                    onClick={() => {
+                      handleClickChangeStatus(shipsData.symbol, shipsData.nav.status === "IN_ORBIT" ? "dock" : "orbit");
+                      handleReset();
+                    }}
+                  >
                     <img src="/icons/change.svg" />
                   </button>
                 </p>
@@ -118,72 +104,67 @@ export default function Vaisseaux() {
             <section className="shipActions">
               <div className="shipNavigation"></div>
               <div className="shipCargo">
-                <div className="flex-row center">
+                <div className="flex-row center extracts">
                   <button className="btn-prm" onClick={() => handleClickExtractWithoutSurvey(shipsData.symbol)}>
                     Extract
                   </button>
                   <div className="cooldown">
                     <div className="flexBetween">
                       <p>Cooldown</p>
-                      {remaining ? <p>{remaining}s</p> : null}
+                      {/* {cooldownTotal ? <p>{cooldownTotal}s</p> : null} */}
                     </div>
-                    <div className="indicator">
-                      <span className="total-time" style={{ width: `${time}%` }}></span>
-                    </div>
+                    <div className="indicator">{/* <span className="total-time" style={{ width: `${time}%` }}></span> */}</div>
                   </div>
                 </div>
+                <h2>Cargo :</h2>
+                <table className="cargo">
+                  <thead>
+                    <tr>
+                      <td>Name</td>
+                      <td>Units</td>
+                      <td>Price per units</td>
+                      <td>Total price</td>
+                      <td>Action</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {shipsData.cargo.inventory.map((inventory) => {
+                      const matchingTransaction = (() => {
+                        if (marketData && marketData.transactions) {
+                          return marketData.transactions.find((transaction) => transaction.tradeSymbol === inventory.symbol);
+                        }
+                        return undefined;
+                      })();
+
+                      return (
+                        <tr key={inventory.symbol}>
+                          <td>{inventory.symbol}</td>
+                          <td>{inventory.units}</td>
+                          {matchingTransaction ? (
+                            <>
+                              <td>{matchingTransaction.pricePerUnit}</td>
+                              <td>{matchingTransaction.pricePerUnit * inventory.units}</td>
+                              <td className="actions">
+                                <button className="btn-prm" onClick={() => handleClickSell(inventory.symbol, shipsData.symbol, inventory.units)}>
+                                  Sell
+                                </button>
+                              </td>
+                            </>
+                          ) : (
+                            <>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                            </>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </section>
           </section>
-
-          {/* <h2>Ship {shipsData.symbol}</h2>
-          <div className="ship">
-            <p>
-              Fuel: {shipsData.fuel.current}/{shipsData.fuel.capacity}
-            </p>
-            <p>
-              Statut: {shipsData.nav.status}
-              <button onClick={() => handleClickChangeStatus(shipsData.symbol, shipsData.nav.status === "IN_ORBIT" ? "dock" : "orbit")}>Change</button>
-            </p>
-            <p>Flight Mode: {shipsData.nav.flightMode}</p>
-            <p>Acutal System: {shipsData.nav.systemSymbol}</p>
-            <p>Waypoint: {shipsData.nav.waypointSymbol}</p>
-            <button onClick={() => handleClickExtractWithoutSurvey(shipsData.symbol)}>Extract</button>
-            <br />
-            <Link to={`/shipyard/${shipsData.nav.systemSymbol}/${shipsData.symbol}`}>Buy a ship in system {shipsData.nav.systemSymbol}</Link>
-            <p>or</p>
-            <Link to={`/shipyard/${shipsData.nav.systemSymbol}/${shipsData.nav.waypointSymbol}/${shipsData.symbol}`}>Buy in {shipsData.nav.waypointSymbol}</Link>
-            <div>
-              <p>Navigate on another planet :</p>
-              {shipsData.nav.status === "IN_ORBIT" ? (
-                <>
-                  <select name="waypoints" id="waypoints" value={selectedWaypoints[shipsData.symbol] || ""} onChange={(e) => handleWaypointChange(shipsData.symbol, e.target.value)}>
-                    <option value="">Select a planet</option>
-                    {waypointsData.map((waypoint) => (
-                      <option key={waypoint.symbol} value={`${waypoint.symbol}`}>
-                        {waypoint.symbol}
-                      </option>
-                    ))}
-                  </select>
-                  <button onClick={() => handleClickNavigate(selectedWaypoints[shipsData.symbol], shipsData.symbol)}>Naviguer</button>
-                </>
-              ) : (
-                <p>You have to be in orbit to navigate</p>
-              )}
-            </div>
-            <div className="cargo">
-              <h2>
-                Your Cargo inventory {shipsData.cargo.units}/{shipsData.cargo.capacity}
-              </h2>
-              {shipsData.cargo.inventory.map((inventory) => (
-                <div key={inventory.symbol}>
-                  <p>{inventory.symbol}</p>
-                  <p>{inventory.units}</p>
-                  <button onClick={() => handleClickSell(inventory.symbol, shipsData.symbol, inventory.units)}>Sell</button>
-                </div>
-              ))}
-            </div>
-          </div> */}
         </div>
       ) : (
         <p>Chargement des données...</p>
