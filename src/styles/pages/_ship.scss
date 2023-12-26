@@ -2,7 +2,7 @@
   height: fit-content;
   width: 200px;
   border-radius: 20px;
-  padding: 25px;
+  padding: 15px;
   background-color: var(--color-table1);
   div {
     margin-bottom: 20px;
@@ -12,6 +12,24 @@
   }
   .title {
     color: var(--color-primary);
+    font-size: 16px;
+  }
+  p {
+    font-size: 14px;
+  }
+  .traits {
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .trait {
+    font-size: 8px;
+    padding: 5px;
+    background-color: var(--color-table3);
+    border-radius: 50px;
+    width: fit-content;
   }
 }
 .cooldown {

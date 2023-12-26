@@ -1,4 +1,4 @@
-const handleChangeStatus = async (waypoint, shipSymbol) => {
+export const handleNavigate = async (waypoint, shipSymbol) => {
   const storedToken = localStorage.getItem("token");
 
   try {
@@ -6,7 +6,7 @@ const handleChangeStatus = async (waypoint, shipSymbol) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${storedToken}`, // Remplacez par votre jeton d'accès
+        Authorization: `Bearer ${storedToken}`,
       },
       body: JSON.stringify({
         waypointSymbol: waypoint,
@@ -24,4 +24,12 @@ const handleChangeStatus = async (waypoint, shipSymbol) => {
   }
 };
 
-export default handleChangeStatus;
+export const handleOpenNav = async () => {
+  const navigationNav = document.querySelector(".navigation");
+  const backgroundNav = document.querySelector(".backgroundNav");
+  const root = document.querySelector("#root");
+
+  navigationNav.classList.toggle("active");
+  backgroundNav.classList.toggle("active");
+  root.classList.toggle("active");
+};

@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import useDataFetching from "./functions/useFetchingData";
 
 export default function Header() {
-  const { data: userData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "user");
+  const { data: userData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
 
   const navigate = useNavigate();
 

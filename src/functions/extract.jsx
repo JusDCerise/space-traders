@@ -16,6 +16,7 @@ const handleExtractWithoutSurvey = async (shipSymbol) => {
     if (responseData.error.message) {
       alert(responseData.error.message);
     }
+
     // window.location.reload();
   } catch (error) {
     console.error(error);

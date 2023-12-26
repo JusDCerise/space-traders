@@ -4,12 +4,11 @@ import useDataFetching from "../functions/useFetchingData";
 
 export default function Profile() {
   const { data: userData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
-  const { data: contractsData } = useDataFetching(`https://api.spacetraders.io/v2/my/contracts`, "contracts");
 
   return (
     <div className="content">
       <h2>Profile</h2>
-      {userData && contractsData ? (
+      {userData ? (
         <div>
           <p>Username: {userData.symbol}</p>
           <p>Start Faction: {userData.startingFaction}</p>

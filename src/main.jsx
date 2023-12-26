@@ -11,6 +11,7 @@ import Fleet from "./routes/Fleet";
 import Ship from "./routes/Ship";
 import Shop from "./routes/Shop";
 import Shipyard from "./routes/Shipyard";
+import Navigation from "./routes/Navigation";
 
 const router = createBrowserRouter([
   {
@@ -46,11 +47,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/fleet/:systemSymbol/:waypointSymbol/:shipSymbol",
+    path: "/fleet/:shipSymbol",
     element: (
       <>
         <Header />
         <Ship />
+        <Navigation />
       </>
     ),
   },
@@ -73,7 +75,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/shipyard/:systemSymbol/:shipyardSymbol/:shipSymbol",
+    path: "/shipyard/:shipSymbol",
     element: (
       <>
         <Header />

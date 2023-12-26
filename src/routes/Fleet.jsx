@@ -2,37 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 import handleChangeStatus from "../functions/changeState";
-import handleNavigate from "../functions/navigate";
-import handleSell from "../functions/sell";
 
 export default function Fleet() {
-  const { data: shipsData, handleLogout } = useDataFetching("https://api.spacetraders.io/v2/my/ships", "ships");
-  const { data: waypointsData } = useDataFetching("https://api.spacetraders.io/v2/systems/X1-HD34/waypoints?limit=20", "waypoint");
-
-  const [selectedWaypoints, setSelectedWaypoints] = useState({});
-
-  const handleWaypointChange = (shipId, selectedWaypoint) => {
-    setSelectedWaypoints((prevSelectedWaypoints) => ({
-      ...prevSelectedWaypoints,
-      [shipId]: selectedWaypoint,
-    }));
-  };
+  const { data: shipsData, handleLogout, setResetState } = useDataFetching("https://api.spacetraders.io/v2/my/ships", "ships");
 
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);
   };
 
-  const handleClickNavigate = (waypoint, shipSymbol) => {
-    handleNavigate(waypoint, shipSymbol);
+  const handleReset = () => {
+    setResetState((prevResetState) => !prevResetState);
   };
 
-  // const handleClickSell = (symbol, shipSymbol, units) => {
-  //   handleSell(symbol, shipSymbol, units);
-  // };
   return (
     <div className="content">
       <h2>Your Fleet</h2>
-      {shipsData && waypointsData ? (
+      {shipsData ? (
         <table>
           <thead>
             <tr>
@@ -52,7 +37,13 @@ export default function Fleet() {
                 <td>{ship.nav.systemSymbol}</td>
                 <td>{ship.nav.waypointSymbol}</td>
                 <td>
-                  <button className="btn-prm" onClick={() => handleClickChangeStatus(ship.symbol, ship.nav.status === "IN_ORBIT" ? "dock" : "orbit")}>
+                  <button
+                    className="btn-prm"
+                    onClick={() => {
+                      handleClickChangeStatus(ship.symbol, ship.nav.status === "IN_ORBIT" ? "dock" : "orbit");
+                      handleReset();
+                    }}
+                  >
                     {ship.nav.status}
                   </button>
                 </td>
@@ -65,7 +56,14 @@ export default function Fleet() {
                   <span className="minimize">/{ship.cargo.capacity}</span>
                 </td>
                 <td>
-                  <Link to={`/fleet/${ship.nav.systemSymbol}/${ship.nav.waypointSymbol}/${ship.symbol}`} className="btn-prm">
+                  <Link
+                    to={`/fleet/${ship.symbol}`}
+                    className="btn-prm"
+                    onClick={() => {
+                      localStorage.setItem("waypointSymbol", ship.nav.waypointSymbol);
+                      localStorage.setItem("systemSymbol", ship.nav.systemSymbol);
+                    }}
+                  >
                     See more
                   </Link>
                 </td>

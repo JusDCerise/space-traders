@@ -2,33 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 import handleChangeStatus from "../functions/changeState";
-import handleNavigate from "../functions/navigate";
+import { handleOpenNav } from "../functions/navigate";
 import handleSell from "../functions/sell";
 import handleExtractWithoutSurvey from "../functions/extract";
 
 export default function Vaisseaux() {
-  const { systemSymbol, shipSymbol, waypointSymbol } = useParams();
+  const { shipSymbol } = useParams();
+  const systemSymbol = localStorage.getItem("systemSymbol");
+  const waypointSymbol = localStorage.getItem("waypointSymbol");
 
   const { data: shipsData, handleLogout, setResetState } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
-  const { data: waypointsData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?limit=20`, "waypoint");
-  // const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
+  const { data: waypointsData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`, "waypoint");
+  const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
   const { data: marketData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`, "market");
-
-  console.log(shipsData);
-
-  const handleWaypointChange = (shipId, selectedWaypoint) => {
-    setSelectedWaypoints((prevSelectedWaypoints) => ({
-      ...prevSelectedWaypoints,
-      [shipId]: selectedWaypoint,
-    }));
-  };
 
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);
-  };
-
-  const handleClickNavigate = (waypoint, shipSymbol) => {
-    handleNavigate(waypoint, shipSymbol);
   };
 
   const handleClickExtractWithoutSurvey = (shipSymbol) => {
@@ -39,14 +28,15 @@ export default function Vaisseaux() {
     handleSell(symbol, shipSymbol, units);
   };
 
-  // Refresh des données de la page
-  // const [resetState, setResetState] = useState(false);
-
   const handleReset = () => {
-    // setInterval(() => {
     setResetState((prevResetState) => !prevResetState);
-    // }, 1000);
   };
+
+  const handleClickOpenNav = () => {
+    handleOpenNav();
+  };
+
+  let isShipyardPresent = false;
 
   return (
     <div className="content">
@@ -58,11 +48,42 @@ export default function Vaisseaux() {
               <div>
                 <p className="title">System :</p>
                 <button onClick={handleReset}>Réinitialiser</button>
-                <p>{shipsData.nav.systemSymbol}</p>
+                <p>{systemSymbol}</p>
               </div>
               <div>
                 <p className="title">Waypoint :</p>
-                <p>{shipsData.nav.waypointSymbol}</p>
+                <p>{waypointSymbol}</p>
+              </div>
+              <div>
+                <p className="title">Waypoint Traits :</p>
+                <div className="traits">
+                  {waypointsData.traits.map((trait) => (
+                    <React.Fragment key={trait.symbol}>
+                      <p className="trait">{trait.symbol}</p>
+                      {trait.symbol === "SHIPYARD" && (
+                        <Link
+                          to={`/shipyard/${shipSymbol}`}
+                          className="btn-prm"
+                          onClick={() => {
+                            localStorage.setItem("waypointSymbol", shipsData.nav.waypointSymbol);
+                            localStorage.setItem("systemSymbol", shipsData.nav.systemSymbol);
+                          }}
+                        >
+                          Buy a Ship
+                        </Link>
+                      )}
+                      {trait.symbol === "SHIPYARD" && (isShipyardPresent = true)}
+                    </React.Fragment>
+                  ))}
+                  {!isShipyardPresent && (
+                    <>
+                      <button className="btn-prm" disabled title="There is no shipyard">
+                        Buy a ship
+                      </button>
+                      <p style={{ fontSize: "10px" }}>to buy a ship, you must be on a planet with a shipyard</p>
+                    </>
+                  )}
+                </div>
               </div>
               <div>
                 <p className="title">Fuel :</p>
@@ -71,7 +92,9 @@ export default function Vaisseaux() {
                 </p>
               </div>
               <div>
-                <button className="btn-prm">Navigate</button>
+                <button className="btn-prm" onClick={handleClickOpenNav} disabled={shipsData.nav.status !== "IN_ORBIT"}>
+                  Navigate
+                </button>
               </div>
               <div>
                 <p className="title">Statut :</p>
@@ -94,12 +117,6 @@ export default function Vaisseaux() {
                   </button>
                 </p>
               </div>
-              <div>
-                <p className="title">Cargo :</p>
-                <p>
-                  {shipsData.cargo.units}/{shipsData.cargo.capacity}
-                </p>
-              </div>
             </section>
             <section className="shipActions">
               <div className="shipNavigation"></div>
@@ -111,19 +128,23 @@ export default function Vaisseaux() {
                       handleClickExtractWithoutSurvey(shipsData.symbol);
                       handleReset();
                     }}
+                    disabled={(waypointsData.type !== "ASTEROID" && waypointsData.type !== "ENGINEERED_ASTEROID" && waypointsData.type !== "ASTEROID_FIELD") || shipsData.nav.status !== "IN_ORBIT"}
+                    title={(waypointsData.type !== "ASTEROID" && waypointsData.type !== "ENGINEERED_ASTEROID" && waypointsData.type !== "ASTEROID_FIELD") || shipsData.nav.status !== "IN_ORBIT" ? "You have to be in orbit to extract (or on an ENGINEERED_ASTEROID, ASTEROID or ASTEROID_FIELD)" : null}
                   >
                     Extract
                   </button>
                   <div className="cooldown">
                     <div className="flexBetween">
                       <p>Cooldown</p>
-                      <p>{shipsData.cooldown.totalSeconds}</p>
+                      <p>{shipsData.cooldown.remainingSeconds}</p>
                       {/* {cooldownTotal ? <p>{cooldownTotal}s</p> : null} */}
                     </div>
                     <div className="indicator">{/* <span className="total-time" style={{ width: `${time}%` }}></span> */}</div>
                   </div>
                 </div>
-                <h2>Cargo :</h2>
+                <h2>
+                  Cargo : {shipsData.cargo.units}/{shipsData.cargo.capacity}
+                </h2>
                 <table className="cargo">
                   <thead>
                     <tr>
@@ -152,7 +173,7 @@ export default function Vaisseaux() {
                               <td>{matchingTransaction.pricePerUnit}</td>
                               <td>{matchingTransaction.pricePerUnit * inventory.units}</td>
                               <td className="actions">
-                                <button className="btn-prm" onClick={() => handleClickSell(inventory.symbol, shipsData.symbol, inventory.units)}>
+                                <button className="btn-prm" onClick={() => handleClickSell(inventory.symbol, shipsData.symbol, inventory.units)} disabled={shipsData.nav.status !== "DOCKED"}>
                                   Sell
                                 </button>
                               </td>

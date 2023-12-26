@@ -1,0 +1,55 @@
+.navigation {
+  width: 80vw;
+  height: 90vh;
+  background-color: var(--color-table1);
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  z-index: -1;
+  opacity: 0;
+  transition: 0.2s;
+  padding: 25px;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  &.active {
+    z-index: 100;
+    opacity: 1;
+  }
+  .navigation_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: fit-content;
+    margin-bottom: 20px;
+  }
+  .waypointsTable {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    .waypointsHead {
+      height: 10%;
+    }
+    .waypointsBody {
+      height: 90%;
+      overflow-y: scroll;
+    }
+  }
+}
+.backgroundNav {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  background-color: var(--color-background);
+  opacity: 0;
+  transition: 0.2s;
+  &.active {
+    z-index: 99;
+    opacity: 0.8;
+  }
+}
