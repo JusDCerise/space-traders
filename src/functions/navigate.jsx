@@ -15,6 +15,9 @@ const handleChangeStatus = async (waypoint, shipSymbol) => {
 
     const response = await fetch(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}/navigate`, options);
     const responseData = await response.json();
+    if (responseData.error.message) {
+      alert(responseData.error.message);
+    }
     window.location.reload();
   } catch (error) {
     console.error(error);

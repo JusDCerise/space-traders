@@ -105,12 +105,19 @@ export default function Vaisseaux() {
               <div className="shipNavigation"></div>
               <div className="shipCargo">
                 <div className="flex-row center extracts">
-                  <button className="btn-prm" onClick={() => handleClickExtractWithoutSurvey(shipsData.symbol)}>
+                  <button
+                    className="btn-prm"
+                    onClick={() => {
+                      handleClickExtractWithoutSurvey(shipsData.symbol);
+                      handleReset();
+                    }}
+                  >
                     Extract
                   </button>
                   <div className="cooldown">
                     <div className="flexBetween">
                       <p>Cooldown</p>
+                      <p>{shipsData.cooldown.totalSeconds}</p>
                       {/* {cooldownTotal ? <p>{cooldownTotal}s</p> : null} */}
                     </div>
                     <div className="indicator">{/* <span className="total-time" style={{ width: `${time}%` }}></span> */}</div>
