@@ -8,6 +8,7 @@ const useDataFetching = (url, dataProperty) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       const storedToken = localStorage.getItem("token");
 
@@ -24,6 +25,9 @@ const useDataFetching = (url, dataProperty) => {
           if (response.ok) {
             const responseData = await response.json();
             setData(responseData.data);
+            if (isMounted) {
+              // console.log("chargé 1");
+            }
           } else {
             console.error("Erreur lors de la requête. Veuillez réessayer.");
           }
@@ -35,11 +39,15 @@ const useDataFetching = (url, dataProperty) => {
       }
     };
     fetchData();
+
     if (resetState) {
       fetchData();
-      // Réinitialiser resetState après avoir déclenché fetchData
       setResetState(false);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [navigate, url, dataProperty, resetState]);
 
   const handleLogout = () => {

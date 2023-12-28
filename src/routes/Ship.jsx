@@ -81,6 +81,17 @@ export default function Vaisseaux() {
                         Buy a ship
                       </button>
                       <p style={{ fontSize: "10px" }}>to buy a ship, you must be on a planet with a shipyard</p>
+                      <Link
+                        to="/shop/"
+                        onClick={() => {
+                          localStorage.setItem("waypointSymbol", shipsData.nav.waypointSymbol);
+                          localStorage.setItem("systemSymbol", shipsData.nav.systemSymbol);
+                          localStorage.setItem("shipSymbol", shipsData.symbol);
+                        }}
+                        style={{ fontSize: "10px" }}
+                      >
+                        See planet with shipyard
+                      </Link>
                     </>
                   )}
                 </div>

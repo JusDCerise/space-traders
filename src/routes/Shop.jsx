@@ -3,7 +3,11 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 
 export default function Shop() {
-  const { systemSymbol, shipSymbol } = useParams();
+  // const { shipSymbol } = useParams();
+  const systemSymbol = localStorage.getItem("systemSymbol");
+  const waypointSymbol = localStorage.getItem("waypointSymbol");
+  const shipSymbol = localStorage.getItem("shipSymbol");
+
   const { data: shipyardData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
 
   return (
@@ -16,10 +20,17 @@ export default function Shop() {
             <div key={shipyard.symbol} className="ship">
               <p>Symbol : {shipyard.symbol}</p>
               <p>Type : {shipyard.type}</p>
-              <Link to={`/shipyard/${systemSymbol}/${shipyard.symbol}/${shipSymbol}`}>View avaibles ships</Link>
-              {/* <button onClick={() => handleClickNavigate(shipyard.symbol, shipSymbol)}>
+              <Link
+                to={`/shipyard/${shipSymbol}/`}
+                onClick={() => {
+                  localStorage.setItem("waypointSymbol", shipyard.symbol);
+                }}
+              >
+                View avaibles ships
+              </Link>
+              <button onClick={() => handleClickNavigate(shipyard.symbol, shipSymbol)}>
                 Navigate to {shipyard.symbol} with {shipSymbol}
-              </button> */}
+              </button>
             </div>
           ))}
           <Link to={"/fleet"}>Back to your ships</Link>

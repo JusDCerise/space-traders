@@ -5,6 +5,7 @@ import handleChangeStatus from "../functions/changeState";
 
 export default function Fleet() {
   const { data: shipsData, handleLogout, setResetState } = useDataFetching("https://api.spacetraders.io/v2/my/ships", "ships");
+  // console.log(shipsData);
 
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);

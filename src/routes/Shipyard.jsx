@@ -10,6 +10,7 @@ export default function Shipyard() {
 
   const { data: shipyardData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/shipyard`, "shipyard");
 
+  // console.log(shipyardData);
   const handleClickBuy = (shipType, waypoint) => {
     handleBuy(shipType, waypoint);
   };
@@ -19,14 +20,15 @@ export default function Shipyard() {
       <h2>Shipyard {waypointSymbol}</h2>
       {shipyardData ? (
         <div>
-          {shipyardData.shipTypes.map((shipType) => (
-            <div key={shipType.type} className="ship">
-              <p>{shipType.type}</p>
-              <button onClick={() => handleClickBuy(shipType.type, waypointSymbol)}>Buy</button>
+          {shipyardData.ships.map((ship) => (
+            <div key={ship.type} className="ship">
+              <p>{ship.type}</p>
+              <p>{ship.purchasePrice}</p>
+              <button onClick={() => handleClickBuy(ship.type, waypointSymbol)} className="btn-prm">Buy</button>
             </div>
           ))}
-          <Link to={`/shipyard/${systemSymbol}/${shipSymbol}`}>Back to all shipyards</Link>
-          <Link to={"/fleet"}>Back to your ships</Link>
+          <Link to={`/shop`} className="btn-prm">Back to all shipyards</Link>
+          <Link to={"/fleet"} className="btn-prm">Back to your ships</Link>
         </div>
       ) : (
         <p>Chargement des données...</p>

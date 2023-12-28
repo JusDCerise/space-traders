@@ -4,7 +4,8 @@ import useDataFetching from "../functions/useFetchingData";
 
 export default function Profile() {
   const { data: userData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
-
+  // console.log(userData);
+  // console.log("test");
   return (
     <div className="content">
       <h2>Profile</h2>

@@ -3,9 +3,16 @@ import { useNavigate, Link } from "react-router-dom";
 import useDataFetching from "./functions/useFetchingData";
 
 export default function Header() {
+  const navigate = useNavigate();
   const { data: userData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
 
-  const navigate = useNavigate();
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   navigate("/login");
+  // };
+
+  // const credits = localStorage.getItem("credits");
+  // const symbolDuJoueur = localStorage.getItem("symbolDuJoueur");
 
   return (
     <div className="header">
@@ -28,6 +35,10 @@ export default function Header() {
         <img src="/icons/logout.svg" alt="" className="link-icon" />
         <span>Log out</span>
       </button>
+      {/* <div className="user">
+          <p>{symbolDuJoueur}</p>
+          <p>{credits} credits</p>
+        </div> */}
       {userData ? (
         <div className="user">
           <p>{userData.symbol}</p>
