@@ -38,16 +38,22 @@
   height: 5px;
   border-radius: 20px;
   background-color: var(--color-table2);
-  overflow: hidden;
+
   position: relative;
   .total-time {
     position: absolute;
     left: 0;
     top: 0;
     height: 5px;
-
+    overflow: hidden;
+    max-width: 100%;
     border-radius: 10px;
     background-color: var(--color-primary);
+  }
+  &.traject img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-47%);
   }
 }
 .cooldown {

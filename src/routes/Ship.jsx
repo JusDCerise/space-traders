@@ -49,17 +49,20 @@ export default function Vaisseaux() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [actualTraject, setActualTraject] = useState(0);
 
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
+  const [cooldownIndicator, setCooldownIndicator] = useState(0);
+
   useEffect(() => {
-    let intervalId; // Déclarez la variable ici
+    let intervalId;
+    let intervalCooldown;
 
     const handleNavigationTime = () => {
       if (shipsData) {
         const actualTime = new Date().getTime();
         const departureTime = new Date(shipsData.nav.route.departureTime).getTime();
         const arrivalTime = new Date(shipsData.nav.route.arrival).getTime();
-
-        const differenceInSeconds = (arrivalTime - departureTime) / 1000;
         const actualTraject = (arrivalTime - actualTime) / 1000;
+
         let elapsedTime = 0;
 
         intervalId = setInterval(() => {
@@ -67,18 +70,41 @@ export default function Vaisseaux() {
           const actualTime = new Date().getTime();
 
           setActualTraject(100 - ((arrivalTime - actualTime) / (arrivalTime - departureTime)) * 100);
-          // console.log(actualTime / 1000);
           elapsedTime++;
           if (actualTime > arrivalTime) {
             clearInterval(intervalId);
             setElapsedTime(0);
+            setActualTraject(100);
+          }
+        }, 1000);
+      }
+    };
+
+    const handleCooldown = () => {
+      if (shipsData) {
+        const totalSeconds = shipsData.cooldown.totalSeconds;
+        let elapsedTime = 0;
+        intervalCooldown = setInterval(() => {
+          const remainingSeconds = shipsData.cooldown.remainingSeconds - elapsedTime;
+          const remainingIndicator = 100 - (remainingSeconds / totalSeconds) * 100;
+          setCooldownRemaining(remainingSeconds);
+          setCooldownIndicator(remainingIndicator);
+          elapsedTime++;
+          if (remainingSeconds <= 0) {
+            clearInterval(intervalCooldown);
+            setCooldownRemaining(0);
+            setCooldownIndicator(100);
           }
         }, 1000);
       }
     };
 
     handleNavigationTime();
-    return () => clearInterval(intervalId);
+    handleCooldown();
+    return () => {
+      clearInterval(intervalId);
+      clearInterval(intervalCooldown);
+    };
   }, [shipsData]);
 
   let isShipyardPresent = false;
@@ -149,6 +175,7 @@ export default function Vaisseaux() {
                 <button
                   onClick={() => {
                     handleClickRefuel(shipsData.symbol);
+                    handleReset();
                   }}
                 >
                   refuel
@@ -216,9 +243,10 @@ export default function Vaisseaux() {
               </div>
             </section>
             <section className="shipActions">
-              <div className="shipNavigation">
-                <p>{elapsedTime} s</p>
-                <div className="indicator">
+              <div className="shipNavigation" style={{ marginBottom: "25px" }}>
+                <p style={{ textAlign: "right" }}>{elapsedTime} s</p>
+                <div className="indicator traject">
+                  <img src="/icons/ship2.svg" style={{ left: `calc(${actualTraject}% - 0.5%)` }} />
                   <span className="total-time" style={{ width: `${actualTraject}%` }}></span>
                 </div>
               </div>
@@ -230,7 +258,7 @@ export default function Vaisseaux() {
                       handleClickExtractWithoutSurvey(shipsData.symbol);
                       handleReset();
                     }}
-                    disabled={(waypointsData.type !== "ASTEROID" && waypointsData.type !== "ENGINEERED_ASTEROID" && waypointsData.type !== "ASTEROID_FIELD") || shipsData.nav.status !== "IN_ORBIT"}
+                    disabled={(waypointsData.type !== "ASTEROID" && waypointsData.type !== "ENGINEERED_ASTEROID" && waypointsData.type !== "ASTEROID_FIELD") || shipsData.nav.status !== "IN_ORBIT" || cooldownRemaining > 0}
                     title={(waypointsData.type !== "ASTEROID" && waypointsData.type !== "ENGINEERED_ASTEROID" && waypointsData.type !== "ASTEROID_FIELD") || shipsData.nav.status !== "IN_ORBIT" ? "You have to be in orbit to extract (or on an ENGINEERED_ASTEROID, ASTEROID or ASTEROID_FIELD)" : null}
                   >
                     Extract
@@ -238,11 +266,11 @@ export default function Vaisseaux() {
                   <div className="cooldown">
                     <div className="flexBetween">
                       <p>Cooldown</p>
-                      <p>{shipsData.cooldown.remainingSeconds}</p>
+                      <p>{cooldownRemaining} s</p>
                       {/* {cooldownTotal ? <p>{cooldownTotal}s</p> : null} */}
                     </div>
                     <div className="indicator">
-                      <span className="total-time" style={{ width: `${(shipsData.cooldown.remainingSeconds / shipsData.cooldown.totalSeconds) * 100}%` }}></span>
+                      <span className="total-time" style={{ width: `${cooldownIndicator}%` }}></span>
                     </div>
                   </div>
                 </div>

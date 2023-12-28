@@ -63,7 +63,12 @@ export default function Navigation() {
                           <td>{waypoint.type}</td>
                           {/* <td></td> */}
                           <td>
-                            <button className="btn-prm" onClick={() => handleClickNavigate(waypoint.symbol, shipSymbol)}>
+                            <button
+                              className="btn-prm"
+                              onClick={() => {
+                                handleClickNavigate(waypoint.symbol, shipSymbol);
+                              }}
+                            >
                               Navigate
                             </button>
                           </td>
