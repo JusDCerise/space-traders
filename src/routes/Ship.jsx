@@ -46,6 +46,41 @@ export default function Vaisseaux() {
     handleFlightMode(symbol, mode);
   };
 
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [actualTraject, setActualTraject] = useState(0);
+
+  useEffect(() => {
+    let intervalId; // Déclarez la variable ici
+
+    const handleNavigationTime = () => {
+      if (shipsData) {
+        const actualTime = new Date().getTime();
+        const departureTime = new Date(shipsData.nav.route.departureTime).getTime();
+        const arrivalTime = new Date(shipsData.nav.route.arrival).getTime();
+
+        const differenceInSeconds = (arrivalTime - departureTime) / 1000;
+        const actualTraject = (arrivalTime - actualTime) / 1000;
+        let elapsedTime = 0;
+
+        intervalId = setInterval(() => {
+          setElapsedTime(Math.round(actualTraject - elapsedTime));
+          const actualTime = new Date().getTime();
+
+          setActualTraject(100 - ((arrivalTime - actualTime) / (arrivalTime - departureTime)) * 100);
+          // console.log(actualTime / 1000);
+          elapsedTime++;
+          if (actualTime > arrivalTime) {
+            clearInterval(intervalId);
+            setElapsedTime(0);
+          }
+        }, 1000);
+      }
+    };
+
+    handleNavigationTime();
+    return () => clearInterval(intervalId);
+  }, [shipsData]);
+
   let isShipyardPresent = false;
 
   return (
@@ -181,7 +216,12 @@ export default function Vaisseaux() {
               </div>
             </section>
             <section className="shipActions">
-              <div className="shipNavigation"></div>
+              <div className="shipNavigation">
+                <p>{elapsedTime} s</p>
+                <div className="indicator">
+                  <span className="total-time" style={{ width: `${actualTraject}%` }}></span>
+                </div>
+              </div>
               <div className="shipCargo">
                 <div className="flex-row center extracts">
                   <button

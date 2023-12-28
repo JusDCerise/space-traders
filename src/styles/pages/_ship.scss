@@ -32,28 +32,28 @@
     width: fit-content;
   }
 }
+.indicator {
+  margin-top: 10px;
+  width: 100%;
+  height: 5px;
+  border-radius: 20px;
+  background-color: var(--color-table2);
+  overflow: hidden;
+  position: relative;
+  .total-time {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 5px;
+
+    border-radius: 10px;
+    background-color: var(--color-primary);
+  }
+}
 .cooldown {
   width: 150px;
   p {
     font-size: 12px;
-  }
-  .indicator {
-    margin-top: 10px;
-    width: 100%;
-    height: 5px;
-    border-radius: 20px;
-    background-color: var(--color-table2);
-    overflow: hidden;
-    position: relative;
-    .total-time {
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 5px;
-
-      border-radius: 10px;
-      background-color: var(--color-primary);
-    }
   }
 }
 .shipCargo {
