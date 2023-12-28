@@ -5,6 +5,7 @@ import handleChangeStatus from "../functions/changeState";
 import { handleOpenNav } from "../functions/navigate";
 import handleSell from "../functions/sell";
 import handleExtractWithoutSurvey from "../functions/extract";
+import handleRefuel from "../functions/refuel";
 
 export default function Vaisseaux() {
   const { shipSymbol } = useParams();
@@ -34,6 +35,10 @@ export default function Vaisseaux() {
 
   const handleClickOpenNav = () => {
     handleOpenNav();
+  };
+
+  const handleClickRefuel = (symbol) => {
+    handleRefuel(symbol);
   };
 
   let isShipyardPresent = false;
@@ -101,6 +106,13 @@ export default function Vaisseaux() {
                 <p>
                   {shipsData.fuel.current}/{shipsData.fuel.capacity}
                 </p>
+                <button
+                  onClick={() => {
+                    handleClickRefuel(shipsData.symbol);
+                  }}
+                >
+                  refuel
+                </button>
               </div>
               <div>
                 <button className="btn-prm" onClick={handleClickOpenNav} disabled={shipsData.nav.status !== "IN_ORBIT"}>
