@@ -6,6 +6,7 @@ import { handleOpenNav } from "../functions/navigate";
 import handleSell from "../functions/sell";
 import handleExtractWithoutSurvey from "../functions/extract";
 import handleRefuel from "../functions/refuel";
+import handleFlightMode from "../functions/flight";
 
 export default function Vaisseaux() {
   const { shipSymbol } = useParams();
@@ -39,6 +40,10 @@ export default function Vaisseaux() {
 
   const handleClickRefuel = (symbol) => {
     handleRefuel(symbol);
+  };
+
+  const handleClickChangeFlight = (symbol, mode) => {
+    handleFlightMode(symbol, mode);
   };
 
   let isShipyardPresent = false;
@@ -137,6 +142,40 @@ export default function Vaisseaux() {
                   {shipsData.nav.flightMode}
                   <button className="btn-prm icon">
                     <img src="/icons/change.svg" />
+                    <ul className="flightMode">
+                      <li
+                        onClick={() => {
+                          handleClickChangeFlight(shipsData.symbol, "CRUISE");
+                          handleReset();
+                        }}
+                      >
+                        Cruise
+                      </li>
+                      <li
+                        onClick={() => {
+                          handleClickChangeFlight(shipsData.symbol, "BURN");
+                          handleReset();
+                        }}
+                      >
+                        Burn
+                      </li>
+                      <li
+                        onClick={() => {
+                          handleClickChangeFlight(shipsData.symbol, "DRIFT");
+                          handleReset();
+                        }}
+                      >
+                        Drift
+                      </li>
+                      <li
+                        onClick={() => {
+                          handleClickChangeFlight(shipsData.symbol, "STEALTH");
+                          handleReset();
+                        }}
+                      >
+                        Stealth
+                      </li>
+                    </ul>
                   </button>
                 </p>
               </div>
@@ -162,7 +201,9 @@ export default function Vaisseaux() {
                       <p>{shipsData.cooldown.remainingSeconds}</p>
                       {/* {cooldownTotal ? <p>{cooldownTotal}s</p> : null} */}
                     </div>
-                    <div className="indicator">{/* <span className="total-time" style={{ width: `${time}%` }}></span> */}</div>
+                    <div className="indicator">
+                      <span className="total-time" style={{ width: `${(shipsData.cooldown.remainingSeconds / shipsData.cooldown.totalSeconds) * 100}%` }}></span>
+                    </div>
                   </div>
                 </div>
                 <h2>

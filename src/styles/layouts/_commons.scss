@@ -170,3 +170,27 @@ table {
     align-items: center;
   }
 }
+
+.btn-prm:hover .flightMode{
+  display: block;
+}
+.btn-prm .flightMode {
+  position: absolute;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  text-align: left;
+  list-style: none;
+  border-radius: 5px;
+  display: none;
+  z-index: 50;
+  li{
+    color: var(--color-background);
+    padding: 5px 10px;
+    &:hover{
+      background-color: var(--color-table2);
+      color: white;
+    }
+  }
+}
