@@ -113,12 +113,17 @@ export default function Vaisseaux() {
     <div className="content">
       {shipsData && waypointsData ? (
         <div>
-          <h1>Ship {shipsData.symbol}</h1>
+          <h1>
+            Ship {shipsData.symbol}{" "}
+            <button onClick={handleReset} className="btn-prm">
+              refresh
+            </button>
+          </h1>
           <section className="flex-row">
             <section className="shipInfos">
               <div>
                 <p className="title">System :</p>
-                <button onClick={handleReset}>Réinitialiser</button>
+
                 <p>{systemSymbol}</p>
               </div>
               <div>

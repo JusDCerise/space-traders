@@ -82,7 +82,7 @@ export default function Navigation() {
           })()}
         </>
       ) : (
-        <p>Chargement des données...</p>
+        <p className="navigation">Chargement des données...</p>
       )}
     </>
   );
