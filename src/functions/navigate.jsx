@@ -19,7 +19,9 @@ export const handleNavigate = async (waypoint, shipSymbol) => {
       alert(responseData.error.message);
     } else {
       localStorage.setItem("waypointSymbol", waypoint);
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
   } catch (error) {
     console.error(error);
