@@ -18,6 +18,7 @@ export default function Navigation() {
 
   const handleClickNavigate = (waypoint, shipSymbol) => {
     handleNavigate(waypoint, shipSymbol);
+    setResetState((prevResetState) => !prevResetState);
   };
 
   const handleClickOpenNav = () => {
