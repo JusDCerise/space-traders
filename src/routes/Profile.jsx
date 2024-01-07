@@ -4,8 +4,15 @@ import useDataFetching from "../functions/useFetchingData";
 
 export default function Profile() {
   const { data: userData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
-  // console.log(userData);
+  const storedToken = localStorage.getItem("token");
+
+  // console.log(storedToken);
   // console.log("test");
+
+  const copyToken = () => {
+    navigator.clipboard.writeText(storedToken);
+  };
+
   return (
     <div className="content">
       <h2>Profile</h2>
@@ -17,6 +24,10 @@ export default function Profile() {
           {/* <p>Contracts: {contractsData[0].type}</p> */}
           <p>Account ID: {userData.accountId}</p>
           <p>Credits: {userData.credits}</p>
+          <p>
+            Your token : <input type="text" value={storedToken} readOnly />
+            <button onClick={copyToken}>Copy</button>
+          </p>
         </div>
       ) : (
         <p>Chargement des données...</p>
