@@ -36,7 +36,9 @@ export default function Shop() {
           <Link to={"/fleet"}>Back to your ships</Link>
         </div>
       ) : (
-        <p>Chargement des données...</p>
+        <div className="loader">
+          <img src="/icons/loader.svg" alt="" />
+        </div>
       )}
     </div>
   );

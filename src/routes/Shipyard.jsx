@@ -31,7 +31,9 @@ export default function Shipyard() {
           <Link to={"/fleet"} className="btn-prm">Back to your ships</Link>
         </div>
       ) : (
-        <p>Chargement des données...</p>
+        <div className="loader">
+          <img src="/icons/loader.svg" alt="" />
+        </div>
       )}
     </div>
   );

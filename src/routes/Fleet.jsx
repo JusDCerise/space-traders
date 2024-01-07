@@ -73,7 +73,9 @@ export default function Fleet() {
           </tbody>
         </table>
       ) : (
-        <p>Chargement des données...</p>
+        <div className="loader">
+          <img src="/icons/loader.svg" alt="" />
+        </div>
       )}
     </div>
   );

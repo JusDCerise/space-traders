@@ -75,6 +75,7 @@ export default function Vaisseaux() {
             clearInterval(intervalId);
             setElapsedTime(0);
             setActualTraject(100);
+            handleReset();
           }
         }, 1000);
       }
@@ -94,6 +95,7 @@ export default function Vaisseaux() {
             clearInterval(intervalCooldown);
             setCooldownRemaining(0);
             setCooldownIndicator(100);
+            handleReset();
           }
         }, 1000);
       }
@@ -332,7 +334,9 @@ export default function Vaisseaux() {
           </section>
         </div>
       ) : (
-        <p>Chargement des données...</p>
+        <div className="loader">
+          <img src="/icons/loader.svg" alt="" />
+        </div>
       )}
     </div>
   );
