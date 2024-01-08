@@ -71,26 +71,62 @@ export default function Connexion() {
     }
   };
 
+  const changeConnexion = (type) => {
+    const createButton = document.querySelector(".createAccountButton");
+    const loginButton = document.querySelector(".loginButton");
+    const createForm = document.querySelector(".createAccount");
+    const loginForm = document.querySelector(".loginForm");
+
+    if (type === "create") {
+      createButton.classList.add("active");
+      createForm.classList.add("active");
+      loginButton.classList.remove("active");
+      loginForm.classList.remove("active");
+    }
+    if (type === "login") {
+      createButton.classList.remove("active");
+      createForm.classList.remove("active");
+      loginButton.classList.add("active");
+      loginForm.classList.add("active");
+    }
+  };
+
   return (
     <div className="loginPage">
-      <div>
-        <h2>Page de Connexion</h2>
+      <div className="loginImg">
+        <img src="/images/login.webp" alt="" className="backgroundLogin" />
+        <h1>Welcome on</h1>
+        <img src="/images/logo_white.svg" alt="" />
       </div>
-      <div>
-        <form onSubmit={handleLoginSubmit} className="loginForm">
-          <label>
-            Token de Connexion :
-            <input type="text" value={tokenSaisi} onChange={(e) => setTokenSaisi(e.target.value)} />
-          </label>
-          <button type="submit">Se connecter</button>
-        </form>
-        <form onSubmit={handleCreateAccount} className="creatAccount">
-          <label>
-            Votre nom d'utilisateur :
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-          </label>
-          <button type="submit">Créer un compte</button>
-        </form>
+      <div className="loginDiv">
+        <div className="chooseSection">
+          <div className="loginButton active" onClick={() => changeConnexion("login")}>
+            Login
+          </div>
+          <div className="createAccountButton" onClick={() => changeConnexion("create")}>
+            Create an account
+          </div>
+        </div>
+        <div className="formSection">
+          <form onSubmit={handleLoginSubmit} className="loginForm active">
+            <label>
+              <input type="text" value={tokenSaisi} onChange={(e) => setTokenSaisi(e.target.value)} />
+              <p>Your token :</p>
+            </label>
+            <button type="submit" className="btn-prm">
+              Log in
+            </button>
+          </form>
+          <form onSubmit={handleCreateAccount} className="createAccount">
+            <label>
+              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+              <p>Choose a username :</p>
+            </label>
+            <button type="submit" className="btn-prm">
+              Create account
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
