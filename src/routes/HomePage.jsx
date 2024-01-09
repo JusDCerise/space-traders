@@ -3,7 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 
 export default function HomePage() {
+
   const { data: userData } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
+
 
   useEffect(() => {
     if (userData) {
