@@ -23,7 +23,7 @@ export default function Profile() {
           <p>Actual location: {userData.headquarters}</p>
           {/* <p>Contracts: {contractsData[0].type}</p> */}
           <p>Account ID: {userData.accountId}</p>
-          <p>Credits: {userData.credits}</p>
+          <p className="credits">Credits: {userData.credits}</p>
           <p>
             Your token : <input type="text" value={storedToken} readOnly />
             <button onClick={copyToken}>Copy</button>

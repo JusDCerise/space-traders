@@ -42,7 +42,7 @@ export default function Header() {
       {userData ? (
         <div className="user">
           <p>{userData.symbol}</p>
-          <p>{userData.credits} credits</p>
+          <p className="credits">{userData.credits}</p>
         </div>
       ) : (
         <p></p>

@@ -172,7 +172,9 @@ export default function Vaisseaux() {
                 </div>
               </div>
               <div>
-                <p className="title">Fuel :</p>
+                <p className="title icon-text">
+                  <img src="/icons/fuel.svg" alt="" /> Fuel :
+                </p>
                 <p>
                   {shipsData.fuel.current}/{shipsData.fuel.capacity}
                 </p>
@@ -307,8 +309,12 @@ export default function Vaisseaux() {
                           <td>{inventory.units}</td>
                           {matchingTransaction ? (
                             <>
-                              <td>{matchingTransaction.pricePerUnit}</td>
-                              <td>{matchingTransaction.pricePerUnit * inventory.units}</td>
+                              <td>
+                                <p className="credits">{matchingTransaction.pricePerUnit}</p>
+                              </td>
+                              <td>
+                                <p className="credits">{matchingTransaction.pricePerUnit * inventory.units}</p>
+                              </td>
                               <td className="actions">
                                 <button className="btn-prm" onClick={() => handleClickSell(inventory.symbol, shipsData.symbol, inventory.units)} disabled={shipsData.nav.status !== "DOCKED"}>
                                   Sell

@@ -18,7 +18,9 @@ export default function HomePage() {
       <br />
       <p>You start width 250.000 credits and a fleet of 2 ships</p>
       <br />
-      <Link className="btn-prm">See my ships</Link>
+      <Link to={"/fleet"} className="btn-prm">
+        See my ships
+      </Link>
       <br />
       <br />
       <br />

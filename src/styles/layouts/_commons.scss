@@ -215,3 +215,32 @@ table {
     transform: rotate(360deg);
   }
 }
+
+.credits {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  &::after {
+    content: url("/icons/credits.svg");
+    height: 22px;
+  }
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.icon-text {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  > img {
+    width: 20px;
+  }
+  &.fleet {
+    justify-content: center;
+  }
+}

@@ -34,7 +34,11 @@ export default function Fleet() {
           <tbody>
             {shipsData.map((ship) => (
               <tr key={ship.symbol} className="ship">
-                <td>{ship.symbol}</td>
+                <td>
+                  <p className="icon-text fleet">
+                    <img src="/icons/spaceship.svg" alt="" /> {ship.symbol}
+                  </p>
+                </td>
                 <td>{ship.nav.systemSymbol}</td>
                 <td>{ship.nav.waypointSymbol}</td>
                 <td>
@@ -49,8 +53,13 @@ export default function Fleet() {
                   </button>
                 </td>
                 <td>
-                  {ship.fuel.current}
-                  <span className="minimize">/{ship.fuel.capacity}</span>
+                  <p className="icon-text fleet">
+                    <img src="/icons/fuel.svg" alt="" />
+                    <span>
+                      {ship.fuel.current}
+                      <span className="minimize">/{ship.fuel.capacity}</span>
+                    </span>
+                  </p>
                 </td>
                 <td>
                   {ship.cargo.units}

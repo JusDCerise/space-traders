@@ -8,9 +8,9 @@ export default function Shipyard() {
   const systemSymbol = localStorage.getItem("systemSymbol");
   const waypointSymbol = localStorage.getItem("waypointSymbol");
 
-  const { data: shipyardData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/shipyard`, "shipyard");
+  const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/shipyard`, "shipyard");
 
-  // console.log(shipyardData);
+  console.log(shipyardData);
   const handleClickBuy = (shipType, waypoint) => {
     handleBuy(shipType, waypoint);
   };
@@ -23,29 +23,42 @@ export default function Shipyard() {
     <div className="content">
       <h2>Shipyard {waypointSymbol}</h2>
       {shipyardData ? (
-        <div>
-          {shipyardData.ships.map((ship) => (
-            <div key={ship.type} className="ship">
-              <p>{ship.type}</p>
-              <p>{ship.purchasePrice}</p>
-              <button
-                onClick={() => {
-                  handleClickBuy(ship.type, waypointSymbol);
-                  handleReset();
-                }}
-                className="btn-prm"
-              >
-                Buy
-              </button>
-            </div>
-          ))}
-          <Link to={`/shop`} className="btn-prm">
-            Back to all shipyards
+        <>
+          <div className="shipyard">
+            {shipyardData.ships.map((ship) => (
+              <div key={ship.type} className="ship">
+                <p className="icon-text">
+                  <img src="/icons/spaceship.svg" alt="" /> {ship.type}
+                </p>
+                <p className="description">{ship.description}</p>
+                <br />
+                <p className="icon-text">
+                  <img src="/icons/speed.svg" alt="" /> Speed : {ship.engine.speed}
+                </p>
+                <p className="icon-text">
+                  <img src="/icons/fuel.svg" alt="" /> Fuel capacity : {ship.frame.fuelCapacity}
+                </p>
+                <div className="row-between">
+                  <p className="credits">{ship.purchasePrice}</p>
+                  <button
+                    onClick={() => {
+                      handleClickBuy(ship.type, waypointSymbol);
+                      handleReset();
+                    }}
+                    className="btn-prm"
+                  >
+                    Buy
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <br />
+          <br />
+          <Link to={`/fleet/${shipSymbol}`} className="btn-prm">
+            Back to your ship
           </Link>
-          <Link to={"/fleet"} className="btn-prm">
-            Back to your ships
-          </Link>
-        </div>
+        </>
       ) : (
         <div className="loader">
           <img src="/icons/loader.svg" alt="" />

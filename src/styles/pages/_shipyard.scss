@@ -1,0 +1,16 @@
+.shipyard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px 5%;
+  .ship {
+    width: 47.5%;
+    height: fit-content;
+    padding: 15px;
+    border-radius: 15px;
+    border: solid 1px white;
+    .description {
+      font-size: 12px;
+      padding-left: 25px;
+    }
+  }
+}
