@@ -22,7 +22,11 @@ export const handleNavigate = async (waypoint, shipSymbol) => {
       window.location.reload();
     }
   } catch (error) {
-    console.error(error);
+    if (error) {
+      console.error(error);
+    } else {
+      return;
+    }
   }
 };
 
@@ -31,7 +35,13 @@ export const handleOpenNav = async () => {
   const backgroundNav = document.querySelector(".backgroundNav");
   const root = document.querySelector("#root");
 
-  navigationNav.classList.toggle("active");
-  backgroundNav.classList.toggle("active");
-  root.classList.toggle("active");
+  if (navigationNav) {
+    navigationNav.classList.toggle("active");
+  }
+  if (backgroundNav) {
+    backgroundNav.classList.toggle("active");
+  }
+  if (root) {
+    root.classList.toggle("active");
+  }
 };

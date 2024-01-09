@@ -37,6 +37,14 @@
       overflow-y: scroll;
     }
   }
+  .trait {
+    font-size: 8px;
+    padding: 5px;
+    background-color: var(--color-table1);
+    border-radius: 50px;
+    width: fit-content;
+    margin-inline: auto;
+  }
 }
 .backgroundNav {
   width: 100vw;

@@ -12,6 +12,16 @@
   border-right: solid 3px #462b73;
   padding: 50px 25px;
   z-index: 50;
+  .headerLogo {
+    max-width: 100%;
+    transition: 0.1s;
+    img {
+      width: 100%;
+    }
+    &:hover {
+      scale: 1.05;
+    }
+  }
 }
 .user {
   position: fixed;

@@ -17,7 +17,11 @@ const handleChangeStatus = async (shipId, statut) => {
     // const responseData = await response.json();
     // window.location.reload();
   } catch (error) {
-    console.error(error);
+    if (error) {
+      console.error(error);
+    } else {
+      return;
+    }
   }
 };
 

@@ -22,7 +22,11 @@ const handleFlightMode = async (symbol, mode) => {
 
     // window.location.reload();
   } catch (error) {
-    console.error(error);
+    if (error) {
+      console.error(error);
+    } else {
+      return;
+    }
   }
 };
 

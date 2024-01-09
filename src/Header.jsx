@@ -16,7 +16,9 @@ export default function Header() {
 
   return (
     <div className="header">
-      <img src="/images/logo.svg" alt="" />
+      <Link to={"/"} className="headerLogo">
+        <img src="/images/logo.svg" alt="" />
+      </Link>
       <div className="headerNav">
         {/* <Link to={"/"} className="headerLink">
           <img src="/icons/user.svg" alt="" className="link-icon" />

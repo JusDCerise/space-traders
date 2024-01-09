@@ -9,7 +9,7 @@ import HomePage from "./routes/HomePage";
 import Profile from "./routes/Profile";
 import Fleet from "./routes/Fleet";
 import Ship from "./routes/Ship";
-import Shop from "./routes/Shop";
+// import Shop from "./routes/Shop";
 import Shipyard from "./routes/Shipyard";
 import Navigation from "./routes/Navigation";
 
@@ -62,15 +62,6 @@ const router = createBrowserRouter([
       <>
         <Header />
         <Profile />
-      </>
-    ),
-  },
-  {
-    path: "/shop/",
-    element: (
-      <>
-        <Header />
-        <Shop />
       </>
     ),
   },

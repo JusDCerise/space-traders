@@ -12,14 +12,20 @@ const handleExtractWithoutSurvey = async (shipSymbol) => {
 
     const response = await fetch(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}/extract`, options);
     const responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
     if (responseData.error.message) {
       alert(responseData.error.message);
+    } else {
+      return;
     }
 
     // window.location.reload();
   } catch (error) {
-    console.error(error);
+    if (error) {
+      console.error(error);
+    } else {
+      return;
+    }
   }
 };
 

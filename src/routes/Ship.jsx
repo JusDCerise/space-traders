@@ -15,8 +15,10 @@ export default function Vaisseaux() {
 
   const { data: shipsData, handleLogout, setResetState } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
   const { data: waypointsData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`, "waypoint");
-  const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
+  // const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
   const { data: marketData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`, "market");
+
+  console.log(waypointsData);
 
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);
@@ -75,7 +77,10 @@ export default function Vaisseaux() {
             clearInterval(intervalId);
             setElapsedTime(0);
             setActualTraject(100);
-            handleReset();
+            if (elapsedTime > 1) {
+              elapsedTime = 0;
+              handleReset();
+            }
           }
         }, 1000);
       }
@@ -95,7 +100,10 @@ export default function Vaisseaux() {
             clearInterval(intervalCooldown);
             setCooldownRemaining(0);
             setCooldownIndicator(100);
-            handleReset();
+            if (elapsedTime > 1) {
+              elapsedTime = 0;
+              handleReset();
+            }
           }
         }, 1000);
       }
@@ -131,6 +139,7 @@ export default function Vaisseaux() {
               <div>
                 <p className="title">Waypoint :</p>
                 <p>{waypointSymbol}</p>
+                <p className="trait">{waypointsData.type}</p>
               </div>
               <div>
                 <p className="title">Waypoint Traits :</p>
@@ -158,18 +167,6 @@ export default function Vaisseaux() {
                       <button className="btn-prm" disabled title="There is no shipyard">
                         Buy a ship
                       </button>
-                      <p style={{ fontSize: "10px" }}>to buy a ship, you must be on a planet with a shipyard</p>
-                      <Link
-                        to="/shop/"
-                        onClick={() => {
-                          localStorage.setItem("waypointSymbol", shipsData.nav.waypointSymbol);
-                          localStorage.setItem("systemSymbol", shipsData.nav.systemSymbol);
-                          localStorage.setItem("shipSymbol", shipsData.symbol);
-                        }}
-                        style={{ fontSize: "10px" }}
-                      >
-                        See planet with shipyard
-                      </Link>
                     </>
                   )}
                 </div>
@@ -184,6 +181,7 @@ export default function Vaisseaux() {
                     handleClickRefuel(shipsData.symbol);
                     handleReset();
                   }}
+                  className="btn-prm"
                 >
                   refuel
                 </button>

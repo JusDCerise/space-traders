@@ -23,11 +23,17 @@ const handleBuy = async (shipType, waypoint) => {
 
     if (responseData.error.message) {
       alert(responseData.error.message);
+    } else {
+      return;
     }
-    console.log(responseData);
+    // console.log(responseData);
     // window.location.reload();
   } catch (error) {
-    console.error(error);
+    if (error) {
+      console.error(error);
+    } else {
+      return;
+    }
   }
 };
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link, useParams } from "react-router-dom";
+// import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 // import handleChangeStatus from "../functions/changeState";
 import { handleNavigate, handleOpenNav } from "../functions/navigate";
@@ -15,7 +15,7 @@ export default function Navigation() {
   const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
   const { data: marketplaceData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=MARKETPLACE`, "marketplace");
 
-  // console.log(shipyardData);
+  // console.log(shipsData);
   // console.log(marketplaceData);
 
   const handleClickNavigate = (waypoint, shipSymbol) => {
@@ -43,12 +43,52 @@ export default function Navigation() {
               const isShipyard = shipyardData.some((waypoint) => waypoint.symbol === waypointSymbol);
               const isMarketplace = marketplaceData.some((waypoint) => waypoint.symbol === waypointSymbol);
 
-              if (isShipyard) {
-                return "Shipyard";
-              } else if (isMarketplace) {
-                return "Marketplace";
-              } else {
-                return "";
+              if (isMarketplace) {
+                return <p className="trait">Marketplace</p>;
+              } else if (isShipyard) {
+                return <p className="trait">Shipyard</p>;
+              }
+            };
+
+            const totalTime = (distance) => {
+              if (shipsData.nav.flightMode === "CRUISE") {
+                return Math.round(distance * (25 / shipsData.engine.speed) + 15);
+              } else if (shipsData.nav.flightMode === "BURN") {
+                return Math.round(distance * (12.5 / shipsData.engine.speed) + 15);
+              } else if (shipsData.nav.flightMode === "DRIFT") {
+                return Math.round(distance * (250 / shipsData.engine.speed) + 15);
+              } else if (shipsData.nav.flightMode === "STEALTH") {
+                return Math.round(distance * (30 / shipsData.engine.speed) + 15);
+              }
+            };
+
+            const enableToNavigate = (distance) => {
+              if (shipsData.fuel.capacity === 0) {
+                return true;
+              } else if (shipsData.nav.flightMode === "CRUISE") {
+                if (shipsData.fuel.current < distance) {
+                  return false;
+                } else {
+                  return true;
+                }
+              } else if (shipsData.nav.flightMode === "BURN") {
+                if (shipsData.fuel.current < 2 * distance) {
+                  return false;
+                } else {
+                  return true;
+                }
+              } else if (shipsData.nav.flightMode === "DRIFT") {
+                if (shipsData.fuel.current < 1) {
+                  return false;
+                } else {
+                  return true;
+                }
+              } else if (shipsData.nav.flightMode === "STEALTH") {
+                if (shipsData.fuel.current < distance) {
+                  return false;
+                } else {
+                  return true;
+                }
               }
             };
 
@@ -75,17 +115,18 @@ export default function Navigation() {
                       {sortedWaypoints.map((waypoint) => (
                         <tr key={waypoint.symbol}>
                           <td>{waypoint.symbol}</td>
-                          <td>{Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1)}</td>
-                          <td>{waypoint.type}</td>
                           <td>
-                            <p className="trait">{getWaypointTrait(waypoint.symbol)}</p>
+                            {Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1)} ({totalTime(Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1))}s)
                           </td>
+                          <td>{waypoint.type}</td>
+                          <td>{getWaypointTrait(waypoint.symbol)}</td>
                           <td>
                             <button
                               className="btn-prm"
                               onClick={() => {
                                 handleClickNavigate(waypoint.symbol, shipSymbol);
                               }}
+                              disabled={!enableToNavigate(Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1))}
                             >
                               Navigate
                             </button>
@@ -100,7 +141,9 @@ export default function Navigation() {
           })()}
         </>
       ) : (
-        <p className="navigation">Chargement des données...</p>
+        <div className="loader">
+          <img src="/icons/loader.svg" alt="" />
+        </div>
       )}
     </>
   );
