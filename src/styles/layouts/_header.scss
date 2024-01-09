@@ -44,7 +44,14 @@
   margin-bottom: 30px;
   text-decoration: none !important;
   font-size: 16px;
-
+  &.active {
+    span {
+      color: var(--color-primary);
+    }
+    .link-icon path {
+      fill: var(--color-primary);
+    }
+  }
   &:last-of-type {
     margin-bottom: 0;
   }
@@ -60,6 +67,9 @@
   &:hover {
     span {
       color: var(--color-primary);
+    }
+    .link-icon path {
+      fill: var(--color-primary);
     }
   }
 }
