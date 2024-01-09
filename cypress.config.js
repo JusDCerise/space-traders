@@ -11,8 +11,9 @@ export default defineConfig({
   e2e: {
     baseUrl: "http://localhost:5173",
   },
+  projectId: "a7bq2k",
 });
 
-module.exports = {
-  projectId: "xkm1h4",
-};
+// module.exports = {
+//   projectId: "xkm1h4",
+// };
