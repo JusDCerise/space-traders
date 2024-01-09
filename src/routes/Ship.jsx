@@ -18,7 +18,7 @@ export default function Vaisseaux() {
   // const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
   const { data: marketData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`, "market");
 
-  console.log(waypointsData);
+  // console.log(waypointsData);
 
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);
