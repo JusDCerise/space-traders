@@ -10,6 +10,8 @@ export default function Shop() {
 
   const { data: shipyardData, handleLogout } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
 
+  
+
   return (
     <div className="content">
       <h2>All Shipyards in System {systemSymbol}</h2>

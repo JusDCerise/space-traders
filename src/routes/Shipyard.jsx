@@ -15,6 +15,10 @@ export default function Shipyard() {
     handleBuy(shipType, waypoint);
   };
 
+  const handleReset = () => {
+    setResetState((prevResetState) => !prevResetState);
+  };
+
   return (
     <div className="content">
       <h2>Shipyard {waypointSymbol}</h2>
@@ -24,11 +28,23 @@ export default function Shipyard() {
             <div key={ship.type} className="ship">
               <p>{ship.type}</p>
               <p>{ship.purchasePrice}</p>
-              <button onClick={() => handleClickBuy(ship.type, waypointSymbol)} className="btn-prm">Buy</button>
+              <button
+                onClick={() => {
+                  handleClickBuy(ship.type, waypointSymbol);
+                  handleReset();
+                }}
+                className="btn-prm"
+              >
+                Buy
+              </button>
             </div>
           ))}
-          <Link to={`/shop`} className="btn-prm">Back to all shipyards</Link>
-          <Link to={"/fleet"} className="btn-prm">Back to your ships</Link>
+          <Link to={`/shop`} className="btn-prm">
+            Back to all shipyards
+          </Link>
+          <Link to={"/fleet"} className="btn-prm">
+            Back to your ships
+          </Link>
         </div>
       ) : (
         <div className="loader">

@@ -16,7 +16,11 @@ const handleBuy = async (shipType, waypoint) => {
 
     const response = await fetch(`https://api.spacetraders.io/v2/my/ships`, options);
     const responseData = await response.json();
-    
+
+    if (response.ok) {
+      alert("you have just successfully purchased the ship");
+    }
+
     if (responseData.error.message) {
       alert(responseData.error.message);
     }
