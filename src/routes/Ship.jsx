@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 import handleChangeStatus from "../functions/changeState";
 import { handleOpenNav } from "../functions/navigate";
@@ -18,7 +18,7 @@ export default function Vaisseaux() {
   // const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
   const { data: marketData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`, "market");
 
-  console.log("chargé");
+  // console.log("chargé");
 
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);
@@ -77,10 +77,10 @@ export default function Vaisseaux() {
             clearInterval(intervalId);
             setElapsedTime(0);
             setActualTraject(100);
-            // if (elapsedTime > 1) {
-            //   elapsedTime = 0;
-            //   handleReset();
-            // }
+            if (elapsedTime > 2) {
+              elapsedTime = 0;
+              handleReset();
+            }
           }
         }, 1000);
       }
@@ -100,10 +100,11 @@ export default function Vaisseaux() {
             clearInterval(intervalCooldown);
             setCooldownRemaining(0);
             setCooldownIndicator(100);
-            // if (elapsedTime > 1) {
-            //   elapsedTime = 0;
-            //   handleReset();
-            // }
+            if (elapsedTime > 2) {
+              console.log("chargé");
+              elapsedTime = 0;
+              handleReset();
+            }
           }
         }, 1000);
       }

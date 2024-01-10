@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+// import React, { useEffect, useState } from "react";
+import { /* useNavigate ,*/ Link } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 import handleChangeStatus from "../functions/changeState";
 
 export default function Fleet() {
-  const { data: shipsData, handleLogout, setResetState } = useDataFetching("https://api.spacetraders.io/v2/my/ships", "ships");
+  const { data: shipsData, setResetState } = useDataFetching("https://api.spacetraders.io/v2/my/ships", "ships");
   // console.log(shipsData);
 
   const handleClickChangeStatus = (shipId, statut) => {

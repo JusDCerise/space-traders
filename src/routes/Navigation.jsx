@@ -11,9 +11,17 @@ export default function Navigation() {
   const { shipSymbol } = useParams();
   const systemSymbol = localStorage.getItem("systemSymbol");
   const waypointSymbol = localStorage.getItem("waypointSymbol");
+  const systemLocalData = JSON.parse(localStorage.getItem(systemSymbol));
+
+  if (systemLocalData) {
+  } else {
+    const { data: systemData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}`, "system");
+    const systemDataStringify = JSON.stringify(systemData);
+    localStorage.setItem(systemSymbol, systemDataStringify);
+  }
 
   const { data: shipsData } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
-  const { data: systemData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}`, "system");
+  // const { data: systemData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}`, "system");
   const { data: waypointData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`, "waypoint");
   const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
   const { data: marketplaceData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=MARKETPLACE`, "marketplace");
@@ -47,10 +55,10 @@ export default function Navigation() {
 
   return (
     <>
-      {shipsData && systemData && waypointData && shipyardData && marketplaceData ? (
+      {shipsData && systemLocalData && waypointData && shipyardData && marketplaceData ? (
         <>
           {(() => {
-            const sortedWaypoints = systemData.waypoints.slice().sort((a, b) => {
+            const sortedWaypoints = systemLocalData.waypoints.slice().sort((a, b) => {
               const distanceA = Math.sqrt((a.x - waypointData.x) ** 2 + (a.y - waypointData.y) ** 2);
               const distanceB = Math.sqrt((b.x - waypointData.x) ** 2 + (b.y - waypointData.y) ** 2);
               return distanceA - distanceB;

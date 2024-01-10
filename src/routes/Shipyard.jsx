@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link, useParams } from "react-router-dom";
+// import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 import handleBuy from "../functions/buy";
 
