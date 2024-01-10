@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 // import handleChangeStatus from "../functions/changeState";
 import { handleNavigate, handleOpenNav } from "../functions/navigate";
-import { calculateDistance } from "../functions/calculateDistance";
-import { enableToNavigate } from "../functions/enableToNavigate";
+import { calculateDistance } from "../functions/navigationDistance/calculateDistance";
+import { enableToNavigate } from "../functions/navigationDistance/enableToNavigate";
+import { totalTime } from "../functions/navigationDistance/totalTime";
 
 export default function Navigation() {
   const { shipSymbol } = useParams();
@@ -39,6 +40,11 @@ export default function Navigation() {
     return enable;
   };
 
+  const handleTotalTime = (distance, flightMode, shipSpeed) => {
+    const time = totalTime(distance, flightMode, shipSpeed);
+    return time;
+  };
+
   return (
     <>
       {shipsData && systemData && waypointData && shipyardData && marketplaceData ? (
@@ -58,18 +64,6 @@ export default function Navigation() {
                 return <p className="trait">Marketplace</p>;
               } else if (isShipyard) {
                 return <p className="trait">Shipyard</p>;
-              }
-            };
-
-            const totalTime = (distance) => {
-              if (shipsData.nav.flightMode === "CRUISE") {
-                return Math.round(distance * (25 / shipsData.engine.speed) + 15);
-              } else if (shipsData.nav.flightMode === "BURN") {
-                return Math.round(distance * (12.5 / shipsData.engine.speed) + 15);
-              } else if (shipsData.nav.flightMode === "DRIFT") {
-                return Math.round(distance * (250 / shipsData.engine.speed) + 15);
-              } else if (shipsData.nav.flightMode === "STEALTH") {
-                return Math.round(distance * (30 / shipsData.engine.speed) + 15);
               }
             };
 
@@ -97,8 +91,7 @@ export default function Navigation() {
                         <tr key={waypoint.symbol}>
                           <td>{waypoint.symbol}</td>
                           <td>
-                            {handleCalculateDistance(waypoint, waypointData)} ({totalTime(handleCalculateDistance(waypoint, waypointData))}s)
-                            {/* {Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1)} ({totalTime(Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1))}s) */}
+                            {handleCalculateDistance(waypoint, waypointData)} ({handleTotalTime(handleCalculateDistance(waypoint, waypointData), shipsData.nav.flightMode, shipsData.engine.speed)}s)
                           </td>
                           <td>{waypoint.type}</td>
                           <td>{getWaypointTrait(waypoint.symbol)}</td>
