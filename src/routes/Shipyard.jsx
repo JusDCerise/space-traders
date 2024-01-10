@@ -10,7 +10,7 @@ export default function Shipyard() {
 
   const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/shipyard`, "shipyard");
 
-  console.log(shipyardData);
+  // console.log(shipyardData);
   const handleClickBuy = (shipType, waypoint) => {
     handleBuy(shipType, waypoint);
   };

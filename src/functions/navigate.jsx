@@ -1,5 +1,8 @@
-export const handleNavigate = async (waypoint, shipSymbol) => {
+export const handleNavigate = async (waypoint, shipSymbol, tokenTest) => {
   const storedToken = localStorage.getItem("token");
+  if (!storedToken) {
+    storedToken = tokenTest;
+  }
 
   try {
     const options = {

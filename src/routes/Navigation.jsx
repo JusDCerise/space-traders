@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 // import handleChangeStatus from "../functions/changeState";
 import { handleNavigate, handleOpenNav } from "../functions/navigate";
+import { calculateDistance } from "../functions/calculateDistance";
 
 export default function Navigation() {
   const { shipSymbol } = useParams();
@@ -26,7 +27,11 @@ export default function Navigation() {
   const handleClickOpenNav = () => {
     handleOpenNav();
   };
-  // console.log(shipsData);
+
+  const handleCalculateDistance = (waypoint1, waypoint2) => {
+    const distance = calculateDistance(waypoint1, waypoint2);
+    return distance;
+  };
 
   return (
     <>
@@ -116,7 +121,8 @@ export default function Navigation() {
                         <tr key={waypoint.symbol}>
                           <td>{waypoint.symbol}</td>
                           <td>
-                            {Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1)} ({totalTime(Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1))}s)
+                            {handleCalculateDistance(waypoint, waypointData)} ({totalTime(handleCalculateDistance(waypoint, waypointData))}s)
+                            {/* {Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1)} ({totalTime(Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1))}s) */}
                           </td>
                           <td>{waypoint.type}</td>
                           <td>{getWaypointTrait(waypoint.symbol)}</td>
@@ -126,7 +132,7 @@ export default function Navigation() {
                               onClick={() => {
                                 handleClickNavigate(waypoint.symbol, shipSymbol);
                               }}
-                              disabled={!enableToNavigate(Number(Math.sqrt((waypoint.x - waypointData.x) ** 2 + (waypoint.y - waypointData.y) ** 2)).toFixed(1))}
+                              disabled={!enableToNavigate(handleCalculateDistance(waypoint, waypointData))}
                             >
                               Navigate
                             </button>

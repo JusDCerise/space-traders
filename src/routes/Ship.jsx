@@ -13,12 +13,12 @@ export default function Vaisseaux() {
   const systemSymbol = localStorage.getItem("systemSymbol");
   const waypointSymbol = localStorage.getItem("waypointSymbol");
 
-  const { data: shipsData, handleLogout, setResetState } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
+  const { data: shipsData, setResetState } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
   const { data: waypointsData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`, "waypoint");
   // const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
   const { data: marketData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`, "market");
 
-  // console.log(waypointsData);
+  console.log("chargé");
 
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);
@@ -77,10 +77,10 @@ export default function Vaisseaux() {
             clearInterval(intervalId);
             setElapsedTime(0);
             setActualTraject(100);
-            if (elapsedTime > 1) {
-              elapsedTime = 0;
-              handleReset();
-            }
+            // if (elapsedTime > 1) {
+            //   elapsedTime = 0;
+            //   handleReset();
+            // }
           }
         }, 1000);
       }
@@ -100,10 +100,10 @@ export default function Vaisseaux() {
             clearInterval(intervalCooldown);
             setCooldownRemaining(0);
             setCooldownIndicator(100);
-            if (elapsedTime > 1) {
-              elapsedTime = 0;
-              handleReset();
-            }
+            // if (elapsedTime > 1) {
+            //   elapsedTime = 0;
+            //   handleReset();
+            // }
           }
         }, 1000);
       }
