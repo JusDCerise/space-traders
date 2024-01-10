@@ -51,7 +51,7 @@ const useDataFetching = (url, dataProperty) => {
   }, [navigate, url, dataProperty, resetState]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     navigate("/login");
   };
 
