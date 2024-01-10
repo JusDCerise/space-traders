@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 
 export default function HomePage() {
+  const symbolDuJoueur = localStorage.getItem("symbolDuJoueur");
+
   const { data: userData } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
+
+  document.title = `Welcome on Space Traders ${symbolDuJoueur}`;
 
   useEffect(() => {
     if (userData) {

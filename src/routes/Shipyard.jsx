@@ -10,13 +10,16 @@ export default function Shipyard() {
 
   const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/shipyard`, "shipyard");
 
+  document.title = `Shipyard of ${waypointSymbol}`;
+
+
   // console.log(shipyardData);
-  const handleClickBuy = (shipType, waypoint) => {
-    handleBuy(shipType, waypoint);
+  const handleClickBuy = (shipType, waypoint, shipPrice) => {
+    handleBuy(shipType, waypoint, shipPrice);
   };
 
   const handleReset = () => {
-    setResetState((prevResetState) => !prevResetState);
+    (prevResetState) => !prevResetState;
   };
 
   return (
@@ -42,7 +45,7 @@ export default function Shipyard() {
                   <p className="credits">{ship.purchasePrice}</p>
                   <button
                     onClick={() => {
-                      handleClickBuy(ship.type, waypointSymbol);
+                      handleClickBuy(ship.type, waypointSymbol, ship.purchasePrice);
                       handleReset();
                     }}
                     className="btn-prm"

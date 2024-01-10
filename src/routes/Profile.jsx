@@ -3,8 +3,11 @@
 import useDataFetching from "../functions/useFetchingData";
 
 export default function Profile() {
+  const symbolDuJoueur = localStorage.getItem("symbolDuJoueur");
   const { data: userData } = useDataFetching(`https://api.spacetraders.io/v2/my/agent`, "agent");
   const storedToken = localStorage.getItem("token");
+
+  document.title = `Profile: ${symbolDuJoueur}`;
 
   // console.log(storedToken);
   // console.log("test");

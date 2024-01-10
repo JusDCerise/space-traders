@@ -20,6 +20,8 @@ export default function Vaisseaux() {
 
   // console.log("chargé");
 
+  document.title = `Ship - ${shipSymbol}`;
+
   const handleClickChangeStatus = (shipId, statut) => {
     handleChangeStatus(shipId, statut);
   };

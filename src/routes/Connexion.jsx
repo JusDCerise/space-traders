@@ -8,6 +8,8 @@ export default function Connexion() {
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
+  document.title = `Space Traders - Login`;
+
   useEffect(() => {
     setToken(tokenSaisi);
   }, [tokenSaisi]);

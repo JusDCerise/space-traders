@@ -1,5 +1,6 @@
-const handleBuy = async (shipType, waypoint) => {
+const handleBuy = async (shipType, waypoint, shipPrice) => {
   const storedToken = localStorage.getItem("token");
+  const credits = localStorage.getItem("credits");
 
   try {
     const options = {
@@ -19,6 +20,8 @@ const handleBuy = async (shipType, waypoint) => {
 
     if (response.ok) {
       alert("you have just successfully purchased the ship");
+      localStorage.setItem("credits", credits - shipPrice);
+      window.location.reload();
     }
 
     if (responseData.error.message) {
