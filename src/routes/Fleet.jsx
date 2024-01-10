@@ -1,10 +1,11 @@
-// import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { /* useNavigate ,*/ Link } from "react-router-dom";
 import useDataFetching from "../functions/useFetchingData";
 import handleChangeStatus from "../functions/changeState";
 
 export default function Fleet() {
   const { data: shipsData, setResetState } = useDataFetching("https://api.spacetraders.io/v2/my/ships", "ships");
+  const [loading, setLoading] = useState(true);
   // console.log(shipsData);
 
   const handleClickChangeStatus = (shipId, statut) => {
@@ -14,6 +15,29 @@ export default function Fleet() {
   const handleReset = () => {
     setResetState((prevResetState) => !prevResetState);
   };
+
+  // Mettre les données des systems dans le localStorage pour limiter les appels api
+  useEffect(() => {
+    const fetchData = async () => {
+      if (shipsData) {
+        for (const ship of shipsData) {
+          const systemLocalData = JSON.parse(localStorage.getItem(ship.nav.systemSymbol));
+          if (!systemLocalData) {
+            try {
+              const response = await fetch(`https://api.spacetraders.io/v2/systems/${ship.nav.systemSymbol}`);
+              const systemData = await response.json();
+              const systemDataStringify = JSON.stringify(systemData);
+              localStorage.setItem(ship.nav.systemSymbol, systemDataStringify);
+            } catch (error) {
+              console.error(`Erreur lors de la récupération des données pour ${ship.nav.systemSymbol}: `, error);
+            }
+          }
+        }
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [shipsData]);
 
   return (
     <div className="content">

@@ -11,17 +11,9 @@ export default function Navigation() {
   const { shipSymbol } = useParams();
   const systemSymbol = localStorage.getItem("systemSymbol");
   const waypointSymbol = localStorage.getItem("waypointSymbol");
-  const systemLocalData = JSON.parse(localStorage.getItem(systemSymbol));
-
-  if (systemLocalData) {
-  } else {
-    const { data: systemData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}`, "system");
-    const systemDataStringify = JSON.stringify(systemData);
-    localStorage.setItem(systemSymbol, systemDataStringify);
-  }
+  const systemLocalData = JSON.parse(localStorage.getItem(systemSymbol)).data;
 
   const { data: shipsData } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
-  // const { data: systemData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}`, "system");
   const { data: waypointData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`, "waypoint");
   const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
   const { data: marketplaceData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=MARKETPLACE`, "marketplace");
@@ -58,6 +50,7 @@ export default function Navigation() {
       {shipsData && systemLocalData && waypointData && shipyardData && marketplaceData ? (
         <>
           {(() => {
+            const flightMode = shipsData.nav.flightMode;
             const sortedWaypoints = systemLocalData.waypoints.slice().sort((a, b) => {
               const distanceA = Math.sqrt((a.x - waypointData.x) ** 2 + (a.y - waypointData.y) ** 2);
               const distanceB = Math.sqrt((b.x - waypointData.x) ** 2 + (b.y - waypointData.y) ** 2);
@@ -99,7 +92,7 @@ export default function Navigation() {
                         <tr key={waypoint.symbol}>
                           <td>{waypoint.symbol}</td>
                           <td>
-                            {handleCalculateDistance(waypoint, waypointData)} ({handleTotalTime(handleCalculateDistance(waypoint, waypointData), shipsData.nav.flightMode, shipsData.engine.speed)}s)
+                            {handleCalculateDistance(waypoint, waypointData)} ({handleTotalTime(handleCalculateDistance(waypoint, waypointData), flightMode, shipsData.engine.speed)}s)
                           </td>
                           <td>{waypoint.type}</td>
                           <td>{getWaypointTrait(waypoint.symbol)}</td>
@@ -109,7 +102,7 @@ export default function Navigation() {
                               onClick={() => {
                                 handleClickNavigate(waypoint.symbol, shipSymbol);
                               }}
-                              disabled={!handleEnableToNavigate(handleCalculateDistance(waypoint, waypointData), shipsData.nav.flightMode, shipsData.fuel.capacity, shipsData.fuel.current)}
+                              disabled={!handleEnableToNavigate(handleCalculateDistance(waypoint, waypointData), flightMode, shipsData.fuel.capacity, shipsData.fuel.current)}
                             >
                               Navigate
                             </button>
