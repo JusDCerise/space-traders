@@ -4,6 +4,7 @@ import useDataFetching from "../functions/useFetchingData";
 // import handleChangeStatus from "../functions/changeState";
 import { handleNavigate, handleOpenNav } from "../functions/navigate";
 import { calculateDistance } from "../functions/calculateDistance";
+import { enableToNavigate } from "../functions/enableToNavigate";
 
 export default function Navigation() {
   const { shipSymbol } = useParams();
@@ -31,6 +32,11 @@ export default function Navigation() {
   const handleCalculateDistance = (waypoint1, waypoint2) => {
     const distance = calculateDistance(waypoint1, waypoint2);
     return distance;
+  };
+
+  const handleEnableToNavigate = (distance, flightMode, fuelCapacity, fuelCurrent) => {
+    const enable = enableToNavigate(distance, flightMode, fuelCapacity, fuelCurrent);
+    return enable;
   };
 
   return (
@@ -64,36 +70,6 @@ export default function Navigation() {
                 return Math.round(distance * (250 / shipsData.engine.speed) + 15);
               } else if (shipsData.nav.flightMode === "STEALTH") {
                 return Math.round(distance * (30 / shipsData.engine.speed) + 15);
-              }
-            };
-
-            const enableToNavigate = (distance) => {
-              if (shipsData.fuel.capacity === 0) {
-                return true;
-              } else if (shipsData.nav.flightMode === "CRUISE") {
-                if (shipsData.fuel.current < distance) {
-                  return false;
-                } else {
-                  return true;
-                }
-              } else if (shipsData.nav.flightMode === "BURN") {
-                if (shipsData.fuel.current < 2 * distance) {
-                  return false;
-                } else {
-                  return true;
-                }
-              } else if (shipsData.nav.flightMode === "DRIFT") {
-                if (shipsData.fuel.current < 1) {
-                  return false;
-                } else {
-                  return true;
-                }
-              } else if (shipsData.nav.flightMode === "STEALTH") {
-                if (shipsData.fuel.current < distance) {
-                  return false;
-                } else {
-                  return true;
-                }
               }
             };
 
@@ -132,7 +108,7 @@ export default function Navigation() {
                               onClick={() => {
                                 handleClickNavigate(waypoint.symbol, shipSymbol);
                               }}
-                              disabled={!enableToNavigate(handleCalculateDistance(waypoint, waypointData))}
+                              disabled={!handleEnableToNavigate(handleCalculateDistance(waypoint, waypointData), shipsData.nav.flightMode, shipsData.fuel.capacity, shipsData.fuel.current)}
                             >
                               Navigate
                             </button>
