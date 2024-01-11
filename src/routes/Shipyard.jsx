@@ -24,7 +24,7 @@ export default function Shipyard() {
 
   return (
     <div className="content">
-      <h2>Shipyard {waypointSymbol}</h2>
+      <h1>Shipyard {waypointSymbol}</h1>
       {shipyardData ? (
         <>
           <div className="shipyard">

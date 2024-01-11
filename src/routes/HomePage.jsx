@@ -17,7 +17,7 @@ export default function HomePage() {
 
   return (
     <div className="content">
-      <h2>HomePage</h2>
+      <h1>HomePage</h1>
       <p>Welcome in Space Traders game</p>
       <br />
       <p>You start width 250.000 credits and a fleet of 2 ships</p>

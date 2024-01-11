@@ -44,7 +44,7 @@ export default function Fleet() {
 
   return (
     <div className="content">
-      <h2>Your Fleet</h2>
+      <h1>Your Fleet</h1>
       {shipsData ? (
         <table>
           <thead>

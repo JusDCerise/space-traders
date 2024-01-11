@@ -111,7 +111,7 @@ export default function Connexion() {
         </div>
         <div className="formSection">
           <form onSubmit={handleLoginSubmit} className="loginForm active">
-            <label>
+            <label className="inputStyle">
               <input type="text" value={tokenSaisi} onChange={(e) => setTokenSaisi(e.target.value)} />
               <p>Your token :</p>
             </label>
@@ -120,7 +120,7 @@ export default function Connexion() {
             </button>
           </form>
           <form onSubmit={handleCreateAccount} className="createAccount">
-            <label>
+            <label className="inputStyle">
               <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
               <p>Choose a username :</p>
             </label>

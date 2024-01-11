@@ -28,6 +28,7 @@ export default function Vaisseaux() {
 
   const handleClickExtractWithoutSurvey = (shipSymbol) => {
     handleExtractWithoutSurvey(shipSymbol);
+    setResetState((prevResetState) => !prevResetState);
   };
 
   const handleClickSell = (symbol, shipSymbol, units) => {
@@ -44,6 +45,7 @@ export default function Vaisseaux() {
 
   const handleClickRefuel = (symbol) => {
     handleRefuel(symbol);
+    setResetState((prevResetState) => !prevResetState);
   };
 
   const handleClickChangeFlight = (symbol, mode) => {
@@ -82,6 +84,7 @@ export default function Vaisseaux() {
             if (elapsedTime > 2) {
               elapsedTime = 0;
               handleReset();
+              console.log("vaisseau arrivé");
             }
           }
         }, 1000);
@@ -103,7 +106,7 @@ export default function Vaisseaux() {
             setCooldownRemaining(0);
             setCooldownIndicator(100);
             if (elapsedTime > 2) {
-              console.log("chargé");
+              console.log("extraction terminé");
               elapsedTime = 0;
               handleReset();
             }
@@ -266,7 +269,7 @@ export default function Vaisseaux() {
                     className="btn-prm"
                     onClick={() => {
                       handleClickExtractWithoutSurvey(shipsData.symbol);
-                      handleReset();
+                      // handleReset();
                     }}
                     disabled={(waypointsData.type !== "ASTEROID" && waypointsData.type !== "ENGINEERED_ASTEROID" && waypointsData.type !== "ASTEROID_FIELD") || shipsData.nav.status !== "IN_ORBIT" || cooldownRemaining > 0}
                     title={(waypointsData.type !== "ASTEROID" && waypointsData.type !== "ENGINEERED_ASTEROID" && waypointsData.type !== "ASTEROID_FIELD") || shipsData.nav.status !== "IN_ORBIT" ? "You have to be in orbit to extract (or on an ENGINEERED_ASTEROID, ASTEROID or ASTEROID_FIELD)" : null}

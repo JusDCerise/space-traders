@@ -1,0 +1,58 @@
+.headProfile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  > img {
+    width: 200px;
+    height: 200px;
+    border-radius: 15px;
+    object-fit: cover;
+    object-position: center;
+  }
+  .minimize {
+    font-size: 12px;
+    opacity: 0.5;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.copyToken {
+  display: flex;
+  position: relative;
+  width: fit-content;
+  input {
+    padding: 5px 10px;
+    border-radius: 5px 0 0 5px;
+    border: none;
+  }
+  button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 0px 5px 5px 0px;
+    cursor: pointer;
+    z-index: 1;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    transition: 0.2s;
+    &:hover {
+      color: var(--color-primary);
+      background-color: var(--color-secondary);
+    }
+  }
+  .copied {
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 0;
+    color: var(--color-primary);
+    transition: 0.1s ease-in;
+    &.active {
+      right: -75px;
+    }
+  }
+}
