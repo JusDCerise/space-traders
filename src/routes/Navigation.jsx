@@ -6,6 +6,7 @@ import { handleNavigate, handleOpenNav } from "../functions/navigate";
 import { calculateDistance } from "../functions/navigationDistance/calculateDistance";
 import { enableToNavigate } from "../functions/navigationDistance/enableToNavigate";
 import { totalTime } from "../functions/navigationDistance/totalTime";
+import { totalFuelRequired } from "../functions/navigationDistance/totalFuelRequired";
 
 export default function Navigation() {
   const { shipSymbol } = useParams();
@@ -47,6 +48,11 @@ export default function Navigation() {
     return time;
   };
 
+  const handleTotalFuelRequired = (distance, flightMode) => {
+    const totalFuel = totalFuelRequired(distance, flightMode);
+    return totalFuel;
+  };
+
   return (
     <>
       {shipsData && systemLocalData && waypointData && shipyardsLocalData && marketsLocalData ? (
@@ -84,6 +90,7 @@ export default function Navigation() {
                       <tr>
                         <td>Waypoint</td>
                         <td>Distance</td>
+                        <td>Fuel Required</td>
                         <td>Type</td>
                         <td>Traits</td>
                         <td>Navigate</td>
@@ -96,6 +103,7 @@ export default function Navigation() {
                           <td>
                             {handleCalculateDistance(waypoint, waypointData)} ({handleTotalTime(handleCalculateDistance(waypoint, waypointData), flightMode, shipsData.engine.speed)}s)
                           </td>
+                          <td>{handleTotalFuelRequired(handleCalculateDistance(waypoint, waypointData), flightMode)} </td>
                           <td>
                             <span className={waypoint.type.toLowerCase()}>{waypoint.type}</span>
                           </td>

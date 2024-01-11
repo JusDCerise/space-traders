@@ -3,6 +3,7 @@ import { expect, test } from "vitest";
 import { calculateDistance } from "../functions/navigationDistance/calculateDistance";
 import { enableToNavigate } from "../functions/navigationDistance/enableToNavigate";
 import { totalTime } from "../functions/navigationDistance/totalTime";
+import { totalFuelRequired } from "../functions/navigationDistance/totalFuelRequired";
 import { ShipTest } from "./test-data/Ship";
 import { Waypoint1Test } from "./test-data/Waypoint1";
 import { Waypoint2Test } from "./test-data/Waypoint2";
@@ -21,4 +22,12 @@ test("ne peut naviguer pour une distance de 800", () => {
 
 test("Temps de navigation entre le waypoint 1 et 2, doit être égal à 56", () => {
   expect(totalTime(calculateDistance(Waypoint1Test, Waypoint2Test), ShipTest.nav.flightMode, ShipTest.engine.speed)).toBe(56);
+});
+
+test("Fuel nécessaire entre le waypoint 1 et 2 en mode CRUISE doit être égal à la distance (49.5)", () => {
+  expect(totalFuelRequired(calculateDistance(Waypoint1Test, Waypoint2Test), "CRUISE")).toBe("49.5");
+});
+
+test("Fuel nécessaire entre le waypoint 1 et 2 en mode BURN doit être égal à 2x la distance (99)", () => {
+  expect(totalFuelRequired(calculateDistance(Waypoint1Test, Waypoint2Test), "BURN")).toBe(99);
 });

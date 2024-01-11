@@ -49,7 +49,6 @@ export default function Vaisseaux() {
 
   const handleClickChangeFlight = (symbol, mode) => {
     handleFlightMode(symbol, mode);
-    window.location.reload();
   };
 
   const [elapsedTime, setElapsedTime] = useState(0);
