@@ -25,6 +25,13 @@
     height: fit-content;
     margin-bottom: 20px;
   }
+  .asteroid,
+  .asteroid_base,
+  .engineered_asteroid {
+    background-color: grey;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
   .waypointsTable {
     height: 100%;
     width: 100%;
@@ -44,6 +51,12 @@
     border-radius: 50px;
     width: fit-content;
     margin-inline: auto;
+    &.marketplace {
+      border: solid 1px #dad78e;
+    }
+    &.shipyard {
+      border: solid 1px var(--color-primary);
+    }
   }
 }
 .backgroundNav {

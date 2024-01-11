@@ -12,14 +12,16 @@ export default function Navigation() {
   const systemSymbol = localStorage.getItem("systemSymbol");
   const waypointSymbol = localStorage.getItem("waypointSymbol");
   const systemLocalData = JSON.parse(localStorage.getItem(systemSymbol)).data;
+  const marketsLocalData = JSON.parse(localStorage.getItem("marketplaces")).data;
+  const shipyardsLocalData = JSON.parse(localStorage.getItem("shipyards")).data;
 
   const { data: shipsData } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
   const { data: waypointData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`, "waypoint");
-  const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
-  const { data: marketplaceData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=MARKETPLACE`, "marketplace");
+  // const { data: shipyardsLocalData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
+  // const { data: marketsLocalData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=MARKETPLACE`, "marketplace");
 
   // console.log(shipsData);
-  // console.log(marketplaceData);
+  // console.log(marketsLocalData);
 
   const handleClickNavigate = (waypoint, shipSymbol) => {
     handleNavigate(waypoint, shipSymbol);
@@ -47,7 +49,7 @@ export default function Navigation() {
 
   return (
     <>
-      {shipsData && systemLocalData && waypointData && shipyardData && marketplaceData ? (
+      {shipsData && systemLocalData && waypointData && shipyardsLocalData && marketsLocalData ? (
         <>
           {(() => {
             const flightMode = shipsData.nav.flightMode;
@@ -58,13 +60,13 @@ export default function Navigation() {
             });
 
             const getWaypointTrait = (waypointSymbol) => {
-              const isShipyard = shipyardData.some((waypoint) => waypoint.symbol === waypointSymbol);
-              const isMarketplace = marketplaceData.some((waypoint) => waypoint.symbol === waypointSymbol);
+              const isShipyard = shipyardsLocalData.some((waypoint) => waypoint.symbol === waypointSymbol);
+              const isMarketplace = marketsLocalData.some((waypoint) => waypoint.symbol === waypointSymbol);
 
               if (isMarketplace) {
-                return <p className="trait">Marketplace</p>;
+                return <p className="trait marketplace">Marketplace</p>;
               } else if (isShipyard) {
-                return <p className="trait">Shipyard</p>;
+                return <p className="trait shipyard">Shipyard</p>;
               }
             };
 
@@ -94,7 +96,9 @@ export default function Navigation() {
                           <td>
                             {handleCalculateDistance(waypoint, waypointData)} ({handleTotalTime(handleCalculateDistance(waypoint, waypointData), flightMode, shipsData.engine.speed)}s)
                           </td>
-                          <td>{waypoint.type}</td>
+                          <td>
+                            <span className={waypoint.type.toLowerCase()}>{waypoint.type}</span>
+                          </td>
                           <td>{getWaypointTrait(waypoint.symbol)}</td>
                           <td>
                             <button

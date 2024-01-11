@@ -25,12 +25,29 @@ export default function Fleet() {
       if (shipsData) {
         for (const ship of shipsData) {
           const systemLocalData = JSON.parse(localStorage.getItem(ship.nav.systemSymbol));
+
           if (!systemLocalData) {
             try {
               const response = await fetch(`https://api.spacetraders.io/v2/systems/${ship.nav.systemSymbol}`);
               const systemData = await response.json();
               const systemDataStringify = JSON.stringify(systemData);
               localStorage.setItem(ship.nav.systemSymbol, systemDataStringify);
+            } catch (error) {
+              console.error(`Erreur lors de la récupération des données pour ${ship.nav.systemSymbol}: `, error);
+            }
+            try {
+              const response = await fetch(`https://api.spacetraders.io/v2/systems/${ship.nav.systemSymbol}/waypoints?traits=MARKETPLACE`);
+              const marketplacesData = await response.json();
+              const marketplacesDataDataStringify = JSON.stringify(marketplacesData);
+              localStorage.setItem("marketplaces", marketplacesDataDataStringify);
+            } catch (error) {
+              console.error(`Erreur lors de la récupération des données pour ${ship.nav.systemSymbol}: `, error);
+            }
+            try {
+              const response = await fetch(`https://api.spacetraders.io/v2/systems/${ship.nav.systemSymbol}/waypoints?traits=SHIPYARD`);
+              const shipyardsData = await response.json();
+              const shipyardsDataStringify = JSON.stringify(shipyardsData);
+              localStorage.setItem("shipyards", shipyardsDataStringify);
             } catch (error) {
               console.error(`Erreur lors de la récupération des données pour ${ship.nav.systemSymbol}: `, error);
             }

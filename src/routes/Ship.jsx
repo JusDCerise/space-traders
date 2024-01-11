@@ -45,11 +45,11 @@ export default function Vaisseaux() {
 
   const handleClickRefuel = (symbol) => {
     handleRefuel(symbol);
-    setResetState((prevResetState) => !prevResetState);
   };
 
   const handleClickChangeFlight = (symbol, mode) => {
     handleFlightMode(symbol, mode);
+    window.location.reload();
   };
 
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -189,6 +189,7 @@ export default function Vaisseaux() {
                     handleClickRefuel(shipsData.symbol);
                     handleReset();
                   }}
+                  disabled={shipsData.nav.status !== "DOCKED"}
                   className="btn-prm"
                 >
                   refuel
