@@ -18,11 +18,6 @@ export default function Navigation() {
 
   const { data: shipsData } = useDataFetching(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}`, "ships");
   const { data: waypointData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`, "waypoint");
-  // const { data: shipyardsLocalData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=SHIPYARD`, "shipyard");
-  // const { data: marketsLocalData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints?traits=MARKETPLACE`, "marketplace");
-
-  // console.log(shipsData);
-  // console.log(marketsLocalData);
 
   const handleClickNavigate = (waypoint, shipSymbol) => {
     handleNavigate(waypoint, shipSymbol);

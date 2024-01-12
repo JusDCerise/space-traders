@@ -16,11 +16,13 @@ const handleSell = async (symbol, shipSymbol, units) => {
 
     const response = await fetch(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}/sell`, options);
     const responseData = await response.json();
+    window.location.reload();
+
     if (responseData.error.message) {
       alert(responseData.error.message);
-    } else {
-      return;
     }
+    // window.location.reload();
+
     // console.log(responseData);
     // window.location.reload();
   } catch (error) {

@@ -12,7 +12,7 @@ const handleRefuel = async (symbol) => {
 
     const response = await fetch(`https://api.spacetraders.io/v2/my/ships/${symbol}/refuel`, options);
     const responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
     window.location.reload();
     if (responseData.error.message) {
       alert(responseData.error.message);

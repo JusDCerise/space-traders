@@ -18,6 +18,7 @@ export default function Vaisseaux() {
   // const { data: shipyardData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/`, "shipyard");
   const { data: marketData } = useDataFetching(`https://api.spacetraders.io/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`, "market");
 
+  // console.log(shipsData);
   // console.log("chargé");
 
   document.title = `Ship - ${shipSymbol}`;
@@ -83,7 +84,7 @@ export default function Vaisseaux() {
             if (elapsedTime > 2) {
               elapsedTime = 0;
               handleReset();
-              console.log("vaisseau arrivé");
+              // console.log("vaisseau arrivé");
             }
           }
         }, 1000);
@@ -101,6 +102,7 @@ export default function Vaisseaux() {
           setCooldownIndicator(remainingIndicator);
           elapsedTime++;
           if (remainingSeconds <= 0) {
+            // console.log(remainingSeconds <= 0);
             clearInterval(intervalCooldown);
             setCooldownRemaining(0);
             setCooldownIndicator(100);
@@ -302,9 +304,9 @@ export default function Vaisseaux() {
                   </thead>
                   <tbody>
                     {shipsData.cargo.inventory.map((inventory) => {
-                      const matchingTransaction = (() => {
-                        if (marketData && marketData.transactions) {
-                          return marketData.transactions.find((transaction) => transaction.tradeSymbol === inventory.symbol);
+                      const matchingExports = (() => {
+                        if (marketData && marketData.tradeGoods) {
+                          return marketData.tradeGoods.find((tradeGood) => (tradeGood.symbol === inventory.symbol && tradeGood.type === "EXCHANGE") || tradeGood.type === "EXPORT");
                         }
                         return undefined;
                       })();
@@ -313,13 +315,13 @@ export default function Vaisseaux() {
                         <tr key={inventory.symbol}>
                           <td>{inventory.symbol}</td>
                           <td>{inventory.units}</td>
-                          {matchingTransaction ? (
+                          {matchingExports ? (
                             <>
                               <td>
-                                <p className="credits">{matchingTransaction.pricePerUnit}</p>
+                                <p className="credits">{matchingExports.sellPrice}</p>
                               </td>
                               <td>
-                                <p className="credits">{matchingTransaction.pricePerUnit * inventory.units}</p>
+                                <p className="credits">{matchingExports.sellPrice * inventory.units}</p>
                               </td>
                               <td className="actions">
                                 <button className="btn-prm" onClick={() => handleClickSell(inventory.symbol, shipsData.symbol, inventory.units)} disabled={shipsData.nav.status !== "DOCKED"}>
@@ -339,6 +341,34 @@ export default function Vaisseaux() {
                     })}
                   </tbody>
                 </table>
+                <br />
+                {marketData && marketData.tradeGoods ? (
+                  <>
+                    <h2>Marketplace :</h2>
+                    <table className="marketplace">
+                      <thead>
+                        <tr>
+                          <td>Name</td>
+                          <td>Price per units</td>
+                          <td>Type</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {marketData.tradeGoods.map((tradeGood) => {
+                          return (
+                            <tr key={tradeGood.symbol}>
+                              <td>{tradeGood.symbol}</td>
+                              <td>{tradeGood.sellPrice}</td>
+                              <td>{tradeGood.type}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </section>
           </section>
